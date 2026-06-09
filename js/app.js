@@ -1,3 +1,5 @@
+import { initPrefs } from "./prefs.js";
+
 const DATA_URL = "data/posts.json";
 
 function escapeHtml(value) {
@@ -108,6 +110,7 @@ async function initPost() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  initPrefs();
   if (document.getElementById("post-list")) initIndex();
   if (document.getElementById("article")) initPost();
 });

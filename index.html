@@ -8,6 +8,16 @@
       name="description"
       content="Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록"
     />
+    <script>
+      (function () {
+        try {
+          var p = JSON.parse(localStorage.getItem("devlog-prefs") || "{}");
+          if (p.theme === "light" || p.theme === "dark") {
+            document.documentElement.dataset.theme = p.theme;
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,10 +27,57 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header class="site-header">
-      <h1>Joey Devlog</h1>
-      <p>개발 다이어리 — 말하듯 남긴 작업 기록</p>
-    </header>
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div class="brand">
+          <h1><a href="index.html">Joey Devlog</a></h1>
+          <p>개발 다이어리 — 말하듯 남긴 작업 기록</p>
+        </div>
+        <button
+          type="button"
+          class="menu-toggle"
+          aria-label="설정 메뉴 열기"
+          aria-expanded="false"
+          aria-controls="prefs-panel"
+        >
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="prefs-overlay" class="prefs-overlay" hidden></div>
+    <aside id="prefs-panel" class="prefs-panel" hidden aria-label="사이트 설정">
+      <div class="prefs-panel-header">
+        <h2>설정</h2>
+        <button type="button" id="prefs-close" class="prefs-close" aria-label="닫기">×</button>
+      </div>
+      <form class="prefs-form" onsubmit="return false">
+        <label class="prefs-field">
+          <span>테마</span>
+          <select id="pref-theme">
+            <option value="system">시스템</option>
+            <option value="light">라이트</option>
+            <option value="dark">다크</option>
+          </select>
+        </label>
+        <label class="prefs-field">
+          <span>글자 크기</span>
+          <select id="pref-font-size">
+            <option value="sm">작게</option>
+            <option value="md">보통</option>
+            <option value="lg">크게</option>
+          </select>
+        </label>
+        <label class="prefs-field">
+          <span>줄 간격</span>
+          <select id="pref-line-height">
+            <option value="normal">보통</option>
+            <option value="relaxed">넓게</option>
+          </select>
+        </label>
+        <button type="button" id="pref-reset" class="prefs-reset">기본값으로</button>
+      </form>
+    </aside>
 
     <main class="layout">
       <div id="post-list" class="card-list" aria-live="polite">
@@ -29,7 +86,11 @@
     </main>
 
     <footer class="site-footer">
-      <p>소스: <code>~/devlogs</code> · 빌드: <code>python3 scripts/build.py</code></p>
+      <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
+      <p class="footer-meta">
+        <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
+        · 소스 <code>~/devlogs</code>
+      </p>
     </footer>
 
     <script src="js/app.js" type="module"></script>
