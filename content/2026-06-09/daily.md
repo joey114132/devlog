@@ -4,7 +4,7 @@ date: 2026-06-09
 
 # /devlog 슬래시 명령 붙임
 
-오늘은 `/devlog` 치면 **오늘 날짜** 폴더에 다이어리 쓰게 하고 싶다고 해서 명령 파일 만들었음. `~/.cursor/commands/devlog.md` — Cursor가 `/devlog` 로 불러옴.
+오늘은 `/devlog` 치면 **오늘 날짜** 폴더에 다이어리 쓰게 하고 싶다고 해서 명령 파일 만들었음. `devlog` 슬래시 명령으로 불러옴.
 
 규칙은 간단함. 날짜는 `date +%Y-%m-%d` 로 오늘만, 경로는 `~/devlogs/오늘/daily.md`. 파일 있으면 덮어쓰지 말고 `---` 밑에 이어 쓰기. 톤은 전에 바꾼 dev diary 그대로 (보고서 형식 X).
 
@@ -16,9 +16,9 @@ date: 2026-06-09
 
 # MCP 네 개 붙이고 하네스 점검함
 
-오늘 Cursor 하네스에 MCP를 더 달았음. `mcp.json`에 brave-search, puppeteer, sequential-thinking, filesystem 넣었고, `mcp-auto-use.mdc` 룰로 에이전트가 알아서 쓰게 해둠. Brave는 `run-brave-search-mcp.sh` 래퍼 만들었는데 `.zshrc` source 할 때 `set -u` 때문에 한번 터져서 `set +u`/`set -u` 감쌌음.
+오늘 에이전트 하네스에 MCP를 더 달았음. `mcp.json`에 brave-search, puppeteer, sequential-thinking, filesystem 넣었고, `mcp-auto-use.mdc` 룰로 에이전트가 알아서 쓰게 해둠. Brave는 `run-brave-search-mcp.sh` 래퍼 만들었는데 `.zshrc` source 할 때 `set -u` 때문에 한번 터져서 `set +u`/`set -u` 감쌌음.
 
-스모크는 sequential-thinking이랑 filesystem, puppeteer는 통과했고, brave는 API 키 없어서 에러 메시지만 확인함. `cli-config.json`에 `Mcp(**)` 넣었는데 Cursor가 한번 되돌려서 다시 넣음.
+스모크는 sequential-thinking이랑 filesystem, puppeteer는 통과했고, brave는 API 키 없어서 에러 메시지만 확인함. `cli-config.json`에 `Mcp(**)` 넣었는데 IDE가 한번 되돌려서 다시 넣음.
 
 그다음 하네스가 “자동으로” 쓰이는지 감사해봤음. RTK랑 sessionStart, stop verify nudge 같은 훅은 진짜 자동인데, superpowers 프로세스 스킬이랑 MCP 호출은 룰만 있고 강제는 아님. `skill-rules.json`에는 devlog랑 리팩터 쪽 몇 개만 훅에 걸려 있고 brainstorming/debugging 같은 건 없음.
 

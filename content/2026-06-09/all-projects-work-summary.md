@@ -1,7 +1,7 @@
 # 이정우 (Joey Lee) — 전체 프로젝트 작업 정리
 
 **작성일:** 2026-06-09  
-**작성 근거:** 로컬 git 이력, Claude 메모리(`~/.claude/projects/.../memory/`), Desktop Q&A·발표 산출물, 최근 Cursor 세션  
+**작성 근거:** 로컬 git 이력, Claude 메모리(`~/.claude/projects/.../memory/`), Desktop Q&A·발표 산출물, 최근 개발 세션  
 **Confluence:** Atlassian MCP가 타임아웃되어 **직접 페이지 fetch는 실패**. 아래 Confluence 섹션은 2026-06-02에 게시·동기화된 메모리·로컬 HTML 초안을 기준으로 정리함. 원문은 링크로 확인.
 
 ---
@@ -127,7 +127,7 @@ c0cdd62 포털 parent timeline report
 | `js/maze-scene.js` / `js/detail-scene.js` | rAF 일시정지, AA `perf-high`만, 중복 resize 제거 |
 | `js/perf.js` | 터치 기기 대부분 `perf-low` |
 | `js/i18n.js` | 인트로 eyebrow 제거, journey 톤 완화 |
-| `.cursor/rules/change-summary.mdc` | 작업 종료 시 변경 목록 규칙 |
+| 에디터 rules/change-summary.mdc | 작업 종료 시 변경 목록 규칙 |
 
 **로컬 검증:** `npm run verify:ui` (Playwright KO+layout) 통과, `http://127.0.0.1:8766`
 
@@ -189,15 +189,15 @@ e02a23d PPT ghost mode
 
 ---
 
-### 7. Cursor / 에이전트 하네스 (2026-06-08~09)
+### 7. 에이전트 하네스 (2026-06-08~09)
 
 개인 개발 환경 정리 (코드 프로덕트가 아닌 **워크플로**).
 
 | 항목 | 위치 | 내용 |
 |------|------|------|
-| skill-activation-prompt | `~/.cursor/hooks/` | 프롬프트마다 `skill-rules.json` 매칭 → 스킬 제안 |
-| post-tool-use-tracker | `~/.cursor/hooks/` | Write/StrReplace 후 편집 파일·build/tsc 캐시 |
-| skill-rules.json | `~/.cursor/skills/` | skill-developer, vercel-react-best-practices, web-design-guidelines |
+| skill-activation-prompt | 로컬 hooks/ | 프롬프트마다 `skill-rules.json` 매칭 → 스킬 제안 |
+| post-tool-use-tracker | 로컬 hooks/ | Write/StrReplace 후 편집 파일·build/tsc 캐시 |
+| skill-rules.json | 로컬 skills/ | skill-developer, vercel-react-best-practices, web-design-guidelines |
 | devlog 스킬 | `~/devlogs/` | 한국어 개발일지 라우터 (`devlog-ko*`) |
 | Claude Code 동기화 | `~/.claude/settings.json` | UserPromptSubmit + PostToolUse 동일 훅 |
 
@@ -222,7 +222,7 @@ flowchart LR
   end
   subgraph personal [개인]
     Port[portfolio Netlify]
-    Harness[Cursor hooks/skills]
+    Harness[에이전트 hooks/skills]
   end
   IoT --> PAI
   DL --> PAI
