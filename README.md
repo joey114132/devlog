@@ -25,3 +25,11 @@ Open http://127.0.0.1:8780
 3. After push, site URL: `https://joey114132.github.io/devlog/`
 
 Re-run `scripts/build.py` whenever you add devlogs, then commit `data/posts.json`.
+
+Or use the full sync (build + push):
+
+```zsh
+~/devlog-site/scripts/sync-github.sh
+```
+
+`/devlog` in Cursor runs this automatically after writing `~/devlogs/YYYY-MM-DD/daily.md`.
