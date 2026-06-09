@@ -31,5 +31,3 @@ Prismic에 올리면 본문에는 `![alt](https://images.prismic.io/joey/…)` �
 미디어 삭제도 넣음. 라이브 패널 이미지/영상 우상단 **삭제** 누르면 본문에서 해당 `![…](url)` 블록이 빠지고, 업로드 목록에 “본문에 삽입됨” 된 항목에도 **삭제**가 있음. Prismic CDN 파일 자체는 안 지우고 md만 정리 — 의도한 동작.
 
 로컬 `:8780` / `:8781` grep·curl로 확인했고, `91e4c51` push 후 라이브 edit.html에도 `editor-body-live__label`, `removeMediaAtIndex` 들어간 거 curl로 봤음.
-
-참고로 포트폴리오 4번째 프로젝트(pingdergarten) 덱 URL은 Vercel `preso-slides-only.vercel.app` — 로봇 앱이 아니라 Reveal.js 슬라이드만 올린 거. ShopPinkki 덱은 Netlify. devlog-site랑은 별개.
