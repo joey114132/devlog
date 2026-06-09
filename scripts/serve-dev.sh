@@ -22,6 +22,7 @@ STATIC_PID=$!
 echo "Static site:  http://127.0.0.1:${STATIC_PORT}/"
 echo "Editor page:  http://127.0.0.1:${STATIC_PORT}/edit.html"
 echo "Save API:     http://127.0.0.1:${EDITOR_PORT}/health"
+echo "Media upload: edit.html (Prismic via .env)"
 echo "Press Ctrl+C to stop."
 
 wait

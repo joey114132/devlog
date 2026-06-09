@@ -27,7 +27,7 @@
       <div class="hero-inner">
         <div class="hero-copy">
           <p class="hero-eyebrow">Editorial dev diary</p>
-          <p class="hero-lead">Cursor 세션과 하네스 작업을 말하듯 남기는 기록입니다.</p>
+          <p class="hero-lead">개발 세션과 하네스 작업을 말하듯 남기는 기록입니다.</p>
         </div>
         <dl class="hero-stats">
           <div><dt>글</dt><dd>${posts.length}</dd></div>
@@ -46,11 +46,15 @@
     const pad = (n) => String(n).padStart(2, "0");
     const todayIso = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 
+    const todayPosts = posts.filter((p) => p.date === todayIso);
     const todayPost =
-      posts.find((p) => p.date === todayIso && p.scrum && (p.scrum.yesterday || p.scrum.today || p.scrum.share)) ||
-      posts.find((p) => p.scrum && (p.scrum.yesterday || p.scrum.today || p.scrum.share));
+      todayPosts.find(
+        (p) => p.scrum?.yesterday || p.scrum?.today || p.scrum?.share
+      ) ||
+      todayPosts[0] ||
+      posts[0];
 
-    root.hidden = false;
+    const shell = root.closest(".index-shell");
 
     const hasScrum =
       todayPost?.scrum &&
@@ -60,18 +64,20 @@
       : "";
 
     if (!card) {
-      root.innerHTML = `
-        <p class="today-scrum-label">오늘 스크럼</p>
-        <p class="today-scrum-empty">어제 한 일 · 오늘 할 일 · 공유할 거를 적어 두면 여기에 보여요.</p>
-        <a class="today-scrum-link" href="edit.html">스크럼 작성</a>
-      `;
+      root.hidden = true;
+      root.innerHTML = "";
+      shell?.classList.add("index-shell--solo");
       return;
     }
+
+    root.hidden = false;
+    shell?.classList.remove("index-shell--solo");
 
     root.innerHTML = `
       <p class="today-scrum-label">오늘 스크럼</p>
       ${card.replace('class="scrum-board scrum-board--side"', 'class="scrum-board scrum-board--side scrum-board--panel"')}
       <a class="today-scrum-link" href="post.html?id=${encodeURIComponent(todayPost.id)}">전체 글 보기</a>
+      <a class="today-scrum-link" href="edit.html?id=${encodeURIComponent(todayPost.id)}">스크럼 수정</a>
     `;
   }
 
@@ -135,6 +141,30 @@
     apply();
   }
 
+  function isDarkTheme() {
+    const theme = document.documentElement.dataset.theme;
+    if (theme === "dark") return true;
+    if (theme === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  function syncHljsTheme() {
+    const link = document.getElementById("hljs-theme");
+    if (!link) return;
+    const dark = isDarkTheme();
+    link.href = dark
+      ? "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
+      : "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css";
+  }
+
+  function syncTopBarOffset() {
+    const shell = document.getElementById("site-top");
+    if (!shell) return;
+    const h = shell.offsetHeight;
+    document.documentElement.style.setProperty("--top-bar-h", `${h}px`);
+    document.documentElement.style.setProperty("--sticky-offset", `${h}px`);
+  }
+
   function initReadingProgress() {
     const bar = document.getElementById("reading-progress");
     if (!bar) return;
@@ -144,10 +174,14 @@
       const max = doc.scrollHeight - doc.clientHeight;
       const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
       bar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
-      bar.parentElement?.classList.toggle("is-visible", window.scrollY > 80);
     };
 
+    syncTopBarOffset();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", syncTopBarOffset, { passive: true });
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(syncTopBarOffset).catch(() => {});
+    }
     onScroll();
   }
 
@@ -213,10 +247,13 @@
 
   function initBackToTop() {
     const btn = document.getElementById("back-to-top");
-    if (!btn) return;
+    if (!btn || btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+
+    const showAfter = () => Math.max(280, window.innerHeight * 0.35);
 
     const onScroll = () => {
-      btn.classList.toggle("is-visible", window.scrollY > 480);
+      btn.classList.toggle("is-visible", window.scrollY > showAfter());
     };
 
     btn.addEventListener("click", () => {
@@ -224,11 +261,58 @@
     });
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
+  }
+
+  function normalizePrismicMediaUrl(src) {
+    if (!src || !/images\.prismic\.io/i.test(src)) return src;
+    const base = src.split("?")[0];
+    if (/\.gif(\?|$)/i.test(src)) return base;
+    return src;
+  }
+
+  function enhanceMedia(bodyEl) {
+    if (!bodyEl) return;
+
+    bodyEl.querySelectorAll("img").forEach((img) => {
+      if (img.src) img.src = normalizePrismicMediaUrl(img.src);
+      img.loading = img.loading || "lazy";
+      img.decoding = img.decoding || "async";
+      img.classList.add("devlog-media", "devlog-media--image");
+
+      const caption = img.getAttribute("alt")?.trim();
+      if (caption && !img.closest("figure")) {
+        const figure = document.createElement("figure");
+        figure.className = "devlog-media-wrap";
+        const parent = img.parentElement;
+        if (parent?.tagName === "P" && parent.childElementCount === 1) {
+          parent.replaceWith(figure);
+        } else {
+          img.parentNode?.insertBefore(figure, img);
+        }
+        figure.appendChild(img);
+        const figcaption = document.createElement("figcaption");
+        figcaption.textContent = caption;
+        figure.appendChild(figcaption);
+      }
+    });
+
+    bodyEl.querySelectorAll("video").forEach((video) => {
+      video.classList.add("devlog-media", "devlog-media--video");
+      video.controls = true;
+      video.playsInline = true;
+      if (!video.hasAttribute("preload")) video.setAttribute("preload", "metadata");
+      video.querySelectorAll("source[src]").forEach((source) => {
+        source.src = normalizePrismicMediaUrl(source.src);
+      });
+      if (video.src) video.src = normalizePrismicMediaUrl(video.src);
+    });
   }
 
   function enhanceArticle(bodyEl) {
     if (!bodyEl) return;
+    enhanceMedia(bodyEl);
     bodyEl.querySelectorAll("pre code").forEach((block) => {
       if (window.hljs) window.hljs.highlightElement(block);
     });
@@ -258,9 +342,13 @@
     initTodayScrum,
     initIndexTools,
     initReadingProgress,
+    syncTopBarOffset,
+    syncHljsTheme,
     initCopyLink,
     initBackToTop,
     enhanceArticle,
     setPageMeta,
   };
+
+  syncHljsTheme();
 })();

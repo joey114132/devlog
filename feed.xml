@@ -3,36 +3,50 @@
   <channel>
     <title>Joey Devlog</title>
     <link>https://joey114132.github.io/devlog/</link>
-    <description>Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록</description>
+    <description>Joey의 개발 다이어리 — 개발 세션, 하네스, 프로젝트 작업 기록</description>
     <language>ko</language>
-    <lastBuildDate>Tue, 09 Jun 2026 11:51:38 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 14:28:42 +0900</lastBuildDate>
     <item>
       <title>어제 devlog 쓰고 나서 정리</title>
       <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/yesterday-devlog-followup</link>
       <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/yesterday-devlog-followup</guid>
       <pubDate>2026-06-09T09:00:00+09:00</pubDate>
-      <description>어제 Cursor 쪽에 devlog 스킬 세 개 붙였음. harness 뭐 쓰는지 보고, refactor 스킬 어디 있는지 찾아주고, 한국어로 md나 Prismic에 남기는 흐름 만들라고 해서 `devlog-ko`, `devlog-ko-markdow…</description>
+      <description>어제 로컬에 devlog 스킬 세 개 붙였음. harness 뭐 쓰는지 보고, refactor 스킬 어디 있는지 찾아주고, 한국어로 md나 Prismic에 남기는 흐름 만들라고 해서 `devlog-ko`, `devlog-ko-markdown`, `d…</description>
+    </item>
+    <item>
+      <title>Prismic CDN 미디어 devlog에 붙임</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/prismic-media-devlog</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/prismic-media-devlog</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- index 페이지 스크럼을 오른쪽 사이드 레일로 옮기고 타임라인은 왼쪽 컬럼에 고정 - sticky 헤더·progress·맨 위로 버튼·스크럼 테마 색 마무리 - devlog 본문에 Prismic CDN 이미지·GIF·영상 붙이는 렌더링 추가 -…</description>
+    </item>
+    <item>
+      <title>devlog UI 다듬는 중</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/devlog-ui-polish</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/devlog-ui-polish</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- devlog-site Playwright로 UI 깨짐 확인 — sticky 헤더, 제목 중복, 빈 스크럼 패널, 설정 버튼 대비 수정 - `← 목록`을 sticky 헤더로 옮기고 GitHub Pages 저장( PAT ) 플로우 정리 - index…</description>
     </item>
     <item>
       <title>/devlog 슬래시 명령 붙임</title>
       <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/daily</link>
       <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/daily</guid>
       <pubDate>2026-06-09T09:00:00+09:00</pubDate>
-      <description>오늘은 `/devlog` 치면 **오늘 날짜** 폴더에 다이어리 쓰게 하고 싶다고 해서 명령 파일 만들었음. `~/.cursor/commands/devlog.md` — Cursor가 `/devlog` 로 불러옴. 규칙은 간단함. 날짜는 `date +…</description>
+      <description>오늘은 `/devlog` 치면 **오늘 날짜** 폴더에 다이어리 쓰게 하고 싶다고 해서 명령 파일 만들었음. `devlog` 슬래시 명령으로 불러옴. 규칙은 간단함. 날짜는 `date +%Y-%m-%d` 로 오늘만, 경로는 `~/devlogs/오늘/…</description>
     </item>
     <item>
       <title>이정우 (Joey Lee) — 전체 프로젝트 작업 정리</title>
       <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/all-projects-work-summary</link>
       <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/all-projects-work-summary</guid>
       <pubDate>2026-06-09T09:00:00+09:00</pubDate>
-      <description>**작성일:** 2026-06-09 **작성 근거:** 로컬 git 이력, Claude 메모리(`~/.claude/projects/.../memory/`), Desktop Q&amp;A·발표 산출물, 최근 Cursor 세션 **Confluence:** At…</description>
+      <description>**작성일:** 2026-06-09 **작성 근거:** 로컬 git 이력, Claude 메모리(`~/.claude/projects/.../memory/`), Desktop Q&amp;A·발표 산출물, 최근 개발 세션 **Confluence:** Atlass…</description>
     </item>
     <item>
-      <title>Cursor에 devlog 스킬 붙인 날</title>
-      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-08/cursor-skills-devlog-setup</link>
-      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-08/cursor-skills-devlog-setup</guid>
+      <title>devlog 스킬 붙인 날</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-08/skills-devlog-setup</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-08/skills-devlog-setup</guid>
       <pubDate>2026-06-08T09:00:00+09:00</pubDate>
-      <description>오늘은 harness 쪽 정리 요청이었음. 어떤 스킬/훅이 쓸만한지 추천해 달라고 하고, refactor 관련 스킬 있는지 찾아달라고 했고, Prismic이나 md로 **한국어 개발일지** 남기는 스킬도 만들어 달라고 함. `~/.cursor/hoo…</description>
+      <description>오늘은 harness 쪽 정리 요청이었음. 어떤 스킬/훅이 쓸만한지 추천해 달라고 하고, refactor 관련 스킬 있는지 찾아달라고 했고, Prismic이나 md로 **한국어 개발일지** 남기는 스킬도 만들어 달라고 함. 로컬 hooks 설정 보니…</description>
     </item>
   </channel>
 </rss>

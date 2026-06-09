@@ -31,6 +31,7 @@
 
     root.dataset.fontSize = prefs.fontSize;
     root.dataset.lineHeight = prefs.lineHeight;
+    window.DevlogFeatures?.syncHljsTheme?.();
   }
 
   function bindSelect(id, key, prefs) {

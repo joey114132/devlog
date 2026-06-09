@@ -23,18 +23,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
+      id="hljs-theme"
       href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
-      media="(prefers-color-scheme: dark)"
     />
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -43,14 +38,18 @@
   <body>
     <div class="grain" aria-hidden="true"></div>
 
-    <div id="reading-progress-wrap" class="reading-progress-wrap" aria-hidden="true">
-      <div id="reading-progress" class="reading-progress"></div>
-    </div>
+    <div id="site-top" class="site-top">
+      <div id="reading-progress-wrap" class="reading-progress-wrap" aria-hidden="true">
+        <div id="reading-progress" class="reading-progress"></div>
+      </div>
 
-    <header class="app-header">
+      <header class="app-header">
       <div class="app-header__inner">
-        <div class="brand">
-          <h1><a href="index.html">Joey Devlog</a></h1>
+        <div class="header-start">
+          <a class="header-btn header-btn--back" href="index.html">← 목록</a>
+          <div class="brand">
+            <h1><a href="index.html">Joey Devlog</a></h1>
+          </div>
         </div>
         <div class="app-actions">
           <a class="header-btn header-btn--write" href="edit.html">
@@ -74,7 +73,8 @@
           </button>
         </div>
       </div>
-    </header>
+      </header>
+    </div>
 
     <div id="prefs-overlay" class="prefs-overlay" hidden></div>
     <aside id="prefs-panel" class="prefs-panel" hidden aria-label="사이트 설정">
@@ -119,7 +119,8 @@
     </main>
 
     <button type="button" id="back-to-top" class="back-to-top" aria-label="맨 위로">
-      ↑
+      <span class="back-to-top__icon" aria-hidden="true">↑</span>
+      <span class="back-to-top__label">맨 위로</span>
     </button>
 
     <footer class="site-footer">

@@ -24,6 +24,18 @@ function readingLabel(minutes) {
   return `${minutes}분 읽기`;
 }
 
+function stripDuplicateTitle(markdown, title) {
+  if (!title || !markdown) return markdown;
+  const lines = markdown.split("\n");
+  let i = 0;
+  while (i < lines.length && lines[i].trim() === "") i += 1;
+  const match = lines[i]?.match(/^#\s+(.+)$/);
+  if (!match || match[1].trim() !== title.trim()) return markdown;
+  lines.splice(i, 1);
+  while (lines[i]?.trim() === "") lines.splice(i, 1);
+  return lines.join("\n");
+}
+
 function renderPills(post) {
   return [
     post.project ? `<span class="meta-pill">${escapeHtml(post.project)}</span>` : "",
@@ -135,7 +147,6 @@ async function initPost() {
     const scrum = renderScrum(post, false);
     const hasScrum = Boolean(scrum);
     root.innerHTML = `
-      <a class="back-link" href="index.html">← 목록</a>
       <div class="article-layout${hasScrum ? " article-layout--with-scrum" : ""}">
         <div class="article-main">
           <header class="article-header">
@@ -158,20 +169,18 @@ async function initPost() {
     `;
 
     const body = document.getElementById("article-body");
-    body.innerHTML = marked.parse(post.markdown, { breaks: true, gfm: true });
+    const bodyMarkdown = stripDuplicateTitle(post.markdown, post.title);
+    body.innerHTML = marked.parse(bodyMarkdown, { breaks: true, gfm: true });
     window.DevlogFeatures?.enhanceArticle(body);
     window.DevlogFeatures?.initCopyLink(post.id);
-    window.DevlogFeatures?.initReadingProgress();
-    window.DevlogFeatures?.initBackToTop();
   } catch (err) {
     root.innerHTML = `<p class="empty">불러오기 실패: ${escapeHtml(err.message)}</p>`;
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  window.DevlogFeatures?.initReadingProgress();
+  window.DevlogFeatures?.initBackToTop();
   if (document.getElementById("post-list")) initIndex();
   if (document.getElementById("article")) initPost();
-  if (!document.getElementById("article")) {
-    window.DevlogFeatures?.initBackToTop();
-  }
 });

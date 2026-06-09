@@ -18,6 +18,8 @@ python3 -m http.server 8780
 
 Open http://127.0.0.1:8780
 
+On **edit.html**, drag & drop images/videos (or paste from clipboard) to upload to Prismic CDN via the local editor API (`8781`). Requires `devlog-site/.env` with `PRISMIC_TOKEN` and `PRISMIC_REPOSITORY`.
+
 ## GitHub Pages
 
 1. Repo → Settings → Pages → Source: **Deploy from branch**
@@ -32,4 +34,4 @@ Or use the full sync (build + push):
 ~/devlog-site/scripts/sync-github.sh
 ```
 
-`/devlog` in Cursor runs this automatically after writing `~/devlogs/YYYY-MM-DD/daily.md`.
+`/devlog` in the editor runs this automatically after writing `~/devlogs/YYYY-MM-DD/daily.md`.

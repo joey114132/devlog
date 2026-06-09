@@ -181,7 +181,7 @@ def write_feed(posts: list[dict]) -> None:
   <channel>
     <title>Joey Devlog</title>
     <link>{SITE_URL}/</link>
-    <description>Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록</description>
+    <description>Joey의 개발 다이어리 — 개발 세션, 하네스, 프로젝트 작업 기록</description>
     <language>ko</language>
     <lastBuildDate>{updated}</lastBuildDate>
 {chr(10).join(items)}
