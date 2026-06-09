@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Joey Devlog</title>
+    <meta
+      name="description"
+      content="Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Joey Devlog</h1>
+      <p>개발 다이어리 — 말하듯 남긴 작업 기록</p>
+    </header>
+
+    <main class="layout">
+      <div id="post-list" class="card-list" aria-live="polite">
+        <p class="empty">불러오는 중…</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>소스: <code>~/devlogs</code> · 빌드: <code>python3 scripts/build.py</code></p>
+    </footer>
+
+    <script src="js/app.js" type="module"></script>
+  </body>
+</html>
