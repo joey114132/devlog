@@ -11,10 +11,12 @@ tags: devlog, ros2, colcon, tutorial
 
 ### 오늘 할 일
 - ROS 2 패키지 직접 만드는 방법 정리 (내 repo 기준)
+- `ros2 run …` **Tab 자동완성** 쓰는 법 정리
 
 ### 공유할 거
 - 예시 패키지: `eduping_stethoscope`, `gogoping_msgs`
 - 워크스페이스: `physical-ai-repo-2/controller/*/src/`
+- 데모: `demo_nodes_cpp` / `demo_nodes_py` — Tab으로 executable 이름까지 완성
 
 ---
 
@@ -254,6 +256,74 @@ ros2 topic echo /eduping/stethoscope/fsr_raw
 ```
 
 `--symlink-install` → Python 수정 후 rebuild 없이 바로 반영되는 경우 많음 (launch/yaml도 편함).
+
+---
+
+## 4.5 `ros2` Tab 자동완성 (짧은 길)
+
+`ros2 run demo_nodes_` 까지 치고 **Tab** 누르면, 터미널이 **지금 overlay에 깔린 패키지 이름**을 읽어서 후보를 뿌려 줌. `demo_nodes_cpp` 고른 뒤 한 칸 띄우고 다시 Tab → `talker`, `listener` 같은 **executable** 목록이 이어짐.
+
+```
+ros2 run demo_nodes_<Tab>
+# → demo_nodes_cpp  demo_nodes_cpp_native  demo_nodes_py
+
+ros2 run demo_nodes_cpp <Tab>
+# → add_two_ints_client  listener  talker  … (설치된 노드 전부)
+```
+
+패키지 이름을 외울 필요 없이 `ros2 pkg list | grep` 반복을 줄이는 용도. 내 워크스페이스 빌드 후에는 `eduping_<Tab>` → `eduping_stethoscope` 같은 식으로 **내 패키지**도 같은 방식으로 뜸.
+
+### 전제 조건
+
+1. **underlay + overlay source** — Tab이 보여 주는 목록은 “지금 이 셸이 아는 패키지”뿐임.
+2. **zsh에서 argcomplete 등록** — ROS 2 CLI는 Python `argcomplete`로 completion을 붙임. `setup.zsh`만으로 안 될 때가 많음 (특히 zsh).
+
+```zsh
+set +u
+source /opt/ros/jazzy/setup.zsh
+source install/setup.zsh   # 워크스페이스
+set -u
+
+# Tab이 안 먹으면 (Jazzy / apt 기준)
+eval "$(register-python-argcomplete ros2)"
+eval "$(register-python-argcomplete colcon)"
+```
+
+내 `~/.zshrc`의 `jazzy()`, `pdg()` 안에는 위 `eval`이 이미 들어 있음. **`ros_activate`만 쓸 때 Tab이 죽어 있으면** 같은 두 줄을 `ros_activate` 끝에 넣으면 됨.
+
+### Tab이 잘 먹는 다른 곳
+
+| 입력 | Tab으로 채워지는 것 |
+| --- | --- |
+| `ros2 run <Tab>` | 패키지 이름 |
+| `ros2 run PKG <Tab>` | 그 패키지의 executable (`ros2 pkg executables PKG`와 동일) |
+| `ros2 topic list` 후 echo/pub | 토픽 이름 (명령마다 다름) |
+| `ros2 interface show <Tab>` | msg/srv/action 타입 |
+| `colcon build --packages-select <Tab>` | 워크스페이스 패키지 |
+
+executable 목록만 CLI로 보려면:
+
+```zsh
+ros2 pkg executables demo_nodes_cpp
+# demo_nodes_cpp talker
+# demo_nodes_cpp listener
+# …
+```
+
+### bash vs zsh
+
+- **bash**: `source /opt/ros/jazzy/setup.bash` 후 Tab이 되는 경우가 많음.
+- **zsh**: `compinit` 순서 때문에 setup만으로는 깨지는 이슈가 있음 ([ros2cli#534](https://github.com/ros2/ros2cli/issues/534)). 위 `register-python-argcomplete`가 실전 해결책.
+
+### 한 번에 확인 (Jazzy + `demo_nodes_*` 설치돼 있을 때)
+
+```zsh
+ros2 pkg list | grep demo_nodes
+ros2 run demo_nodes_cpp talker   # 다른 터미널
+ros2 run demo_nodes_cpp listener
+```
+
+Tab은 **오타 줄이기 + 패키지 탐색**용. 도메인 ID·네트워크·`source` 안 한 터미널 문제는 Tab으로 안 잡힘 — 그건 여전히 §6 체크리스트.
 
 ---
 
