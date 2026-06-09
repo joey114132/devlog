@@ -143,9 +143,9 @@ html[data-theme="dark"] .top-bar {
 }
 
 .top-bar-inner {
-  max-width: calc(var(--max) + 4rem);
+  max-width: min(calc(var(--max) + var(--side) + 3rem), 96vw);
   margin: 0 auto;
-  padding: 1.1rem 1.5rem;
+  padding: 0.9rem 1rem;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -1033,9 +1033,9 @@ html[data-theme="dark"] .hljs {
 }
 
 .site-footer {
-  max-width: calc(var(--max) + 4rem);
+  max-width: min(calc(var(--max) + var(--side) + 3rem), 96vw);
   margin: 0 auto;
-  padding: 0 1.5rem 2.5rem;
+  padding: 0 1rem 2rem;
   font-size: 0.8rem;
   color: var(--ink-muted);
   text-align: center;
