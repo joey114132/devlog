@@ -13,5 +13,3 @@ project: agent-harness
 근데 템플릿이 보고서 같다고 피드백 와서 — 앞으로는 **dev diary** 느낌으로 쓰기로 스킬 톤 바꿨다. 표랑 `## 요청` / `## 검증` 같은 거 빼고 말하듯이.
 
 Prismic에 올리는 건 아직 커스텀 타입 모름. CDN 에셋만 쓰는 중이라 draft 올리기는 나중에.
-
-![shutterstock 172261862 2  d36510500ca044e1bd9bb51f798b3141](https://images.prismic.io/joey/aiekaweQX7-eW_4j_shutterstock_172261862-2--d36510500ca044e1bd9bb51f798b3141.jpg?auto=format,compress)
