@@ -1,12 +1,13 @@
 {
-  "generated_at": "2026-06-09T14:28:42+09:00",
+  "generated_at": "2026-06-09T15:27:38+09:00",
   "source": "/home/joey/devlogs",
   "site_url": "https://joey114132.github.io/devlog",
-  "count": 6,
+  "count": 7,
   "tags": [
     "agent-harness",
     "devlog",
     "devlog-site",
+    "editor",
     "media",
     "prismic",
     "ui"
@@ -47,6 +48,26 @@
       "excerpt": "- index 페이지 스크럼을 오른쪽 사이드 레일로 옮기고 타임라인은 왼쪽 컬럼에 고정 - sticky 헤더·progress·맨 위로 버튼·스크럼 테마 색 마무리 - devlog 본문에 Prismic CDN 이미지·GIF·영상 붙이는 렌더링 추가 -…",
       "reading_minutes": 1,
       "markdown": "## Daily Scrum\n\n### 어제 한 일\n- index 페이지 스크럼을 오른쪽 사이드 레일로 옮기고 타임라인은 왼쪽 컬럼에 고정\n- sticky 헤더·progress·맨 위로 버튼·스크럼 테마 색 마무리\n\n### 오늘 할 일\n- devlog 본문에 Prismic CDN 이미지·GIF·영상 붙이는 렌더링 추가\n- 새 글로 실제 `images.prismic.io/joey` URL이 잘 나오는지 확인\n- pingdergarten `.env`에 `PRISMIC_TOKEN` 다시 넣으면 Asset API 업로드도 연결\n\n### 공유할 거\n- 로컬: http://127.0.0.1:8780/post.html?id=2026-06-09%2Fprismic-media-devlog\n- Prismic repo `joey` CDN은 6월 초 QnA 덱 올릴 때 이미 쓰던 URL 그대로 동작함\n\n---\n\n# Prismic CDN 미디어 devlog에 붙임\n\n오늘은 devlog 글에 **이미지·GIF·영상** 넣을 수 있게 손봤음. Prismic 문서 타입은 아직 없고, 예전에 EduPing QnA HTML 올릴 때 쓴 **`images.prismic.io/joey`** CDN URL만 md에 박으면 됨.\n\n`.env` 열어보니 `PRISMIC_TOKEN` / `PRISMIC_REPOSITORY`는 지금 비어 있어서 **새 업로드는 못 함**. 대신 `~/Desktop/prismic_cdn_urls.tsv`에 URL 맵 있고, 아래는 그중에서 고름.\n\n## 정적 JPG\n\nEduPing 웹 UI 캡처. JPG는 `?auto=format,compress` 쿼리 그대로 둬도 됨.\n\n![EduPing 웹 UI — Prismic CDN JPG](https://images.prismic.io/joey/ah548weQX7-eWhs0_web_eduping_ui.jpg?auto=format,compress)\n\n## GIF (애니메이션)\n\n하이파이브 시뮬 GIF. **GIF는 쿼리 빼야** 프레임이 살아 있음 — 렌더링할 때 JS가 `?auto=format,compress` 자동으로 떼 줌.\n\n![MuJoCo 하이파이브 시뮬 GIF](https://images.prismic.io/joey/ah545AeQX7-eWhsl_hifive_sim.gif)\n\n실기 로봇 GIF도 하나 더.\n\n![실기 하이파이브 GIF](https://images.prismic.io/joey/ah544geQX7-eWhsk_hifive_real.gif)\n\n## 영상 (HTML `<video>`)\n\n`joey` repo에는 아직 mp4가 없어서, **같은 Prismic CDN**에서 팀 repo `minsung`에 올라간 webm으로 `<video>` 렌더만 검증함. 나중에 Asset API로 `joey`에 mp4 올리면 `source src`만 바꾸면 됨.\n\n<figure class=\"devlog-media-wrap\">\n  <video class=\"devlog-media devlog-media--video\" controls playsinline preload=\"metadata\" poster=\"https://images.prismic.io/joey/ah546weQX7-eWhsr_report_ui2.jpg?auto=format,compress\">\n    <source src=\"https://images.prismic.io/minsung/aiEf9AeQX7-eWt7u_portal-demo.webm\" type=\"video/webm\" />\n  </video>\n  <figcaption>Prismic CDN webm 예시 (repo minsung). joey에 mp4 업로드 후에는 joey URL로 교체.</figcaption>\n</figure>\n\n나중에 `physical-ai-repo-2/scripts/prismic/upload.sh` 쓰려면 루트 `.env`에 토큰·`PRISMIC_REPOSITORY=joey` 채우면 됨. GIF 업로드 후 URL은 **쿼리 없이** md에 붙이기.\n\n## 구현 메모\n\n- `features.js`의 `enhanceMedia()` — lazy load, GIF URL 정규화, `alt` 있으면 `<figure>` + caption\n- `style.css` — `.devlog-media` 반응형, 비디오 16:9 박스\n- 에디터 미리보기도 같은 `enhanceArticle()` 타게 함\n\n로컬 `:8780`에서 이 글 열어서 이미지·GIF 깨지는지 봤고, CDN HEAD 200 확인함. 새 Asset 업로드는 토큰 없어서 스킵."
+    },
+    {
+      "id": "2026-06-09/editor-live-preview",
+      "date": "2026-06-09",
+      "title": "에디터 본문 라이브 미리보기 + 미디어 삭제",
+      "slug": "editor-live-preview",
+      "project": "devlog-site",
+      "tags": [
+        "devlog",
+        "editor",
+        "media"
+      ],
+      "scrum": {
+        "yesterday": "- devlog 본문에 Prismic CDN 이미지·GIF 렌더링 붙임\n- 에디터에 Prismic 업로드·textarea 드롭 위치 삽입까지 연결",
+        "today": "- 본문 textarea 아래에서 이미지가 바로 보이게 (raw `![…](url)`만 보이던 문제)\n- 미리보기 탭 제거, 업로드한 미디어 본문에서 삭제 UI\n- GitHub Pages에 push",
+        "share": "- 로컬: http://127.0.0.1:8780/edit.html\n- 라이브: https://joey114132.github.io/devlog/edit.html\n- 커밋 `91e4c51` — `main`에 push 완료"
+      },
+      "excerpt": "- devlog 본문에 Prismic CDN 이미지·GIF 렌더링 붙임 - 에디터에 Prismic 업로드·textarea 드롭 위치 삽입까지 연결 - 본문 textarea 아래에서 이미지가 바로 보이게 (raw `![…](url)`만 보이던 문제)…",
+      "reading_minutes": 1,
+      "markdown": "## Daily Scrum\n\n### 어제 한 일\n- devlog 본문에 Prismic CDN 이미지·GIF 렌더링 붙임\n- 에디터에 Prismic 업로드·textarea 드롭 위치 삽입까지 연결\n\n### 오늘 할 일\n- 본문 textarea 아래에서 이미지가 바로 보이게 (raw `![…](url)`만 보이던 문제)\n- 미리보기 탭 제거, 업로드한 미디어 본문에서 삭제 UI\n- GitHub Pages에 push\n\n### 공유할 거\n- 로컬: http://127.0.0.1:8780/edit.html\n- 라이브: https://joey114132.github.io/devlog/edit.html\n- 커밋 `91e4c51` — `main`에 push 완료\n\n---\n\n# 에디터 본문 라이브 미리보기 + 미디어 삭제\n\nPrismic에 올리면 본문에는 `![alt](https://images.prismic.io/joey/…)` 마크다운만 들어가는데, textarea 안에서는 당연히 그 문자열만 보임. “이미지가 안 나온다”는 느낌이라 **본문 바로 아래**에 라이브 패널을 달았음. `marked` + `enhanceMedia()` 쓰니까 실제 글 페이지랑 같은 `<figure>` / `<img>` 로 렌더됨.\n\n그다음 **미리보기** 탭은 역할이 겹쳐서 뺐음. 탭 없이 작성 화면 하나 + 아래 패널이면 충분함.\n\n미디어 삭제도 넣음. 라이브 패널 이미지/영상 우상단 **삭제** 누르면 본문에서 해당 `![…](url)` 블록이 빠지고, 업로드 목록에 “본문에 삽입됨” 된 항목에도 **삭제**가 있음. Prismic CDN 파일 자체는 안 지우고 md만 정리 — 의도한 동작.\n\n로컬 `:8780` / `:8781` grep·curl로 확인했고, `91e4c51` push 후 라이브 edit.html에도 `editor-body-live__label`, `removeMediaAtIndex` 들어간 거 curl로 봤음.\n\n참고로 포트폴리오 4번째 프로젝트(pingdergarten) 덱 URL은 Vercel `preso-slides-only.vercel.app` — 로봇 앱이 아니라 Reveal.js 슬라이드만 올린 거. ShopPinkki 덱은 Netlify. devlog-site랑은 별개."
     },
     {
       "id": "2026-06-09/devlog-ui-polish",
