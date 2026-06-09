@@ -50,52 +50,58 @@
       </div>
 
       <div id="panel-write" class="editor-panel">
-        <fieldset class="editor-meta">
-          <legend>메타</legend>
-          <div class="editor-grid">
-            <label class="editor-field">
-              <span>날짜</span>
-              <input type="date" id="edit-date" class="editor-field" required />
-            </label>
-            <label class="editor-field">
-              <span>슬러그 (파일명)</span>
-              <input type="text" id="edit-slug" placeholder="daily" pattern="[a-z0-9][a-z0-9-]*" />
-            </label>
+        <div class="editor-layout">
+          <div class="editor-main">
+            <fieldset class="editor-meta">
+              <legend>메타</legend>
+              <div class="editor-grid">
+                <label class="editor-field">
+                  <span>날짜</span>
+                  <input type="date" id="edit-date" class="editor-field" required />
+                </label>
+                <label class="editor-field">
+                  <span>슬러그 (파일명)</span>
+                  <input type="text" id="edit-slug" placeholder="daily" pattern="[a-z0-9][a-z0-9-]*" />
+                </label>
+                <label class="editor-field editor-field-wide">
+                  <span>제목</span>
+                  <input type="text" id="edit-title" placeholder="오늘 한 일" />
+                </label>
+                <label class="editor-field">
+                  <span>프로젝트</span>
+                  <input type="text" id="edit-project" placeholder="cursor-harness" />
+                </label>
+                <label class="editor-field">
+                  <span>태그 (쉼표)</span>
+                  <input type="text" id="edit-tags" placeholder="devlog, harness" />
+                </label>
+              </div>
+            </fieldset>
+
             <label class="editor-field editor-field-wide">
-              <span>제목</span>
-              <input type="text" id="edit-title" placeholder="오늘 한 일" />
-            </label>
-            <label class="editor-field">
-              <span>프로젝트</span>
-              <input type="text" id="edit-project" placeholder="cursor-harness" />
-            </label>
-            <label class="editor-field">
-              <span>태그 (쉼표)</span>
-              <input type="text" id="edit-tags" placeholder="devlog, harness" />
+              <span>본문 (마크다운)</span>
+              <textarea id="edit-body" class="editor-body" rows="14" placeholder="자유 메모, 세부 내용…"></textarea>
             </label>
           </div>
-        </fieldset>
 
-        <fieldset class="editor-scrum">
-          <legend>Daily Scrum</legend>
-          <label class="scrum-field">
-            <span>어제 한 일</span>
-            <textarea id="scrum-yesterday" class="scrum-field" rows="4" placeholder="- 어제 마친 작업"></textarea>
-          </label>
-          <label class="scrum-field">
-            <span>오늘 할 일</span>
-            <textarea id="scrum-today" class="scrum-field" rows="4" placeholder="- 오늘 할 작업"></textarea>
-          </label>
-          <label class="scrum-field">
-            <span>공유할 거</span>
-            <textarea id="scrum-share" class="scrum-field" rows="3" placeholder="- 팀에 공유할 내용"></textarea>
-          </label>
-        </fieldset>
-
-        <label class="editor-field editor-field-wide">
-          <span>본문 (마크다운)</span>
-          <textarea id="edit-body" class="editor-body" rows="14" placeholder="자유 메모, 세부 내용…"></textarea>
-        </label>
+          <aside class="editor-side">
+            <fieldset class="editor-scrum">
+              <legend>Scrum</legend>
+              <label class="scrum-field">
+                <span>어제 한 일</span>
+                <textarea id="scrum-yesterday" class="scrum-field" rows="4" placeholder="- 어제 마친 작업"></textarea>
+              </label>
+              <label class="scrum-field">
+                <span>오늘 할 일</span>
+                <textarea id="scrum-today" class="scrum-field" rows="4" placeholder="- 오늘 할 작업"></textarea>
+              </label>
+              <label class="scrum-field">
+                <span>공유할 거</span>
+                <textarea id="scrum-share" class="scrum-field" rows="3" placeholder="- 팀에 공유할 내용"></textarea>
+              </label>
+            </fieldset>
+          </aside>
+        </div>
       </div>
 
       <div id="panel-preview" class="editor-panel editor-preview-panel is-hidden">

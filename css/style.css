@@ -11,7 +11,8 @@
   --font-serif: "Noto Serif KR", "Iowan Old Style", "Palatino Linotype", serif;
   --font-sans: "Noto Sans KR", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
-  --max: 720px;
+  --max: 820px;
+  --side: 220px;
   --base-size: 16px;
   --body-leading: 1.65;
   --article-leading: 1.8;
@@ -399,13 +400,13 @@ body.menu-open .prefs-panel {
 }
 
 .layout {
-  max-width: calc(var(--max) + 4rem);
+  max-width: min(calc(var(--max) + var(--side) + 3rem), 96vw);
   margin: 0 auto;
-  padding: 1rem 1.5rem 4rem;
+  padding: 0.85rem 1rem 3rem;
 }
 
 .layout-article {
-  max-width: calc(var(--max) + 6rem);
+  max-width: min(calc(var(--max) + var(--side) + 3rem), 96vw);
 }
 
 .site-hero {
@@ -577,7 +578,7 @@ body.menu-open .prefs-panel {
 
 .post-card {
   display: block;
-  padding: 1.25rem 1.4rem;
+  padding: 1rem 1.1rem;
   background: var(--bg-card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -606,10 +607,32 @@ body.menu-open .prefs-panel {
   }
 }
 
+.post-card--with-scrum {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(9.5rem, 11.5rem);
+  gap: 0.85rem 1rem;
+  align-items: start;
+}
+
+.post-card-main {
+  min-width: 0;
+}
+
 .post-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
   box-shadow: 0 16px 36px rgba(28, 25, 23, 0.12);
+}
+
+@media (max-width: 560px) {
+  .post-card--with-scrum {
+    grid-template-columns: 1fr;
+  }
+
+  .scrum-side {
+    border-top: 1px solid var(--line);
+    padding-top: 0.65rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -690,7 +713,55 @@ body.menu-open .prefs-panel {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 2rem 1.6rem;
+  padding: 1.35rem 1.15rem;
+}
+
+.article-layout {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+.article-layout--with-scrum {
+  grid-template-columns: minmax(0, 1fr) var(--side);
+  gap: 1rem 1.15rem;
+}
+
+.article-main {
+  min-width: 0;
+}
+
+.article-scrum {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .article-scrum .scrum-board--side {
+    position: sticky;
+    top: 5.25rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .article-layout--with-scrum {
+    grid-template-columns: 1fr;
+  }
+
+  .article-scrum {
+    order: -1;
+  }
+
+  .article-scrum .scrum-stack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .article-scrum .scrum-stack {
+    grid-template-columns: 1fr;
+  }
 }
 
 .article-meta-row {
@@ -981,45 +1052,44 @@ html[data-theme="dark"] .hljs {
 }
 
 .scrum-board {
-  margin: 1.25rem 0 0;
-  padding: 1rem 1.1rem 1.1rem;
+  margin: 0;
+  padding: 0.85rem 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--accent-soft) 35%, var(--bg-card));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-soft) 30%, var(--bg-card));
 }
 
 .scrum-board-title {
-  margin: 0 0 0.75rem;
-  font-size: 0.72rem;
+  margin: 0 0 0.6rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
-.scrum-grid {
+.scrum-stack {
   display: grid;
-  gap: 0.85rem;
+  gap: 0.7rem;
 }
 
-@media (min-width: 720px) {
-  .scrum-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.scrum-col + .scrum-col {
+  padding-top: 0.65rem;
+  border-top: 1px dashed color-mix(in srgb, var(--line) 80%, transparent);
 }
 
 .scrum-label {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.3rem;
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--ink);
 }
 
 .scrum-text {
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   color: var(--ink-muted);
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 .scrum-text p {
@@ -1031,28 +1101,49 @@ html[data-theme="dark"] .hljs {
   padding-left: 1.1rem;
 }
 
-.scrum-compact {
-  margin: 0.35rem 0 0.5rem;
-  padding: 0;
-  list-style: none;
+.scrum-side {
+  margin: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 35%, var(--line));
   display: grid;
-  gap: 0.25rem;
+  gap: 0.45rem;
 }
 
-.scrum-compact li {
-  font-size: 0.82rem;
+.scrum-side-item p {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
   color: var(--ink-muted);
-  line-height: 1.45;
 }
 
-.scrum-compact strong {
-  color: var(--accent);
+.scrum-side-label {
+  display: block;
+  font-size: 0.64rem;
   font-weight: 700;
-  margin-right: 0.25rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
 }
 
 .layout-editor {
-  max-width: calc(var(--max) + 8rem);
+  max-width: min(calc(var(--max) + var(--side) + 3rem), 96vw);
+}
+
+.editor-layout {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 860px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr) var(--side);
+    gap: 1rem 1.15rem;
+  }
+
+  .editor-side {
+    position: sticky;
+    top: 5.25rem;
+  }
 }
 
 .editor-header h1 {
@@ -1116,10 +1207,20 @@ html[data-theme="dark"] .hljs {
 .editor-meta,
 .editor-scrum {
   margin: 0;
-  padding: 1rem 1.1rem;
+  padding: 0.85rem 0.9rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--bg-card);
+}
+
+.editor-main {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.editor-side {
+  min-width: 0;
 }
 
 .editor-meta legend,

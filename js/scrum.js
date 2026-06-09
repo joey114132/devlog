@@ -75,14 +75,19 @@
 
     if (compact) {
       const bits = SECTIONS.map((s) => {
-        const val = summarize(scrum[s.key], 56);
+        const val = summarize(scrum[s.key], 48);
         if (!val) return "";
-        return `<li><strong>${s.label}</strong> ${escapeHtml(val)}</li>`;
+        return `
+          <div class="scrum-side-item">
+            <span class="scrum-side-label">${s.label}</span>
+            <p>${escapeHtml(val)}</p>
+          </div>
+        `;
       })
         .filter(Boolean)
         .join("");
 
-      return `<ul class="scrum-compact">${bits}</ul>`;
+      return `<aside class="scrum-side" aria-label="Daily Scrum">${bits}</aside>`;
     }
 
     const cols = SECTIONS.map((s) => {
@@ -99,9 +104,9 @@
       .join("");
 
     return `
-      <section class="scrum-board" aria-label="Daily Scrum">
-        <p class="scrum-board-title">Daily Scrum</p>
-        <div class="scrum-grid">${cols}</div>
+      <section class="scrum-board scrum-board--side" aria-label="Daily Scrum">
+        <p class="scrum-board-title">Scrum</p>
+        <div class="scrum-stack">${cols}</div>
       </section>
     `;
   }

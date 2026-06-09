@@ -38,16 +38,19 @@ function renderScrum(post, compact = false) {
 function renderPostCard(post) {
   const read = readingLabel(post.reading_minutes);
   const scrum = renderScrum(post, true);
+  const hasScrum = Boolean(scrum);
   return `
-    <a class="post-card" href="post.html?id=${encodeURIComponent(post.id)}" data-date="${escapeHtml(post.date)}">
-      <div class="post-card-top">
-        <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
-        ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+    <a class="post-card${hasScrum ? " post-card--with-scrum" : ""}" href="post.html?id=${encodeURIComponent(post.id)}" data-date="${escapeHtml(post.date)}">
+      <div class="post-card-main">
+        <div class="post-card-top">
+          <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
+          ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+        </div>
+        <h2>${escapeHtml(post.title)}</h2>
+        <p>${escapeHtml(post.excerpt)}</p>
+        ${renderPills(post)}
       </div>
-      <h2>${escapeHtml(post.title)}</h2>
       ${scrum}
-      <p>${escapeHtml(post.excerpt)}</p>
-      ${renderPills(post)}
     </a>
   `;
 }
@@ -129,23 +132,28 @@ async function initPost() {
 
     const read = readingLabel(post.reading_minutes);
     const scrum = renderScrum(post, false);
+    const hasScrum = Boolean(scrum);
     root.innerHTML = `
       <a class="back-link" href="index.html">← 목록</a>
-      <header class="article-header">
-        <div class="article-meta-row">
-          <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
-          ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+      <div class="article-layout${hasScrum ? " article-layout--with-scrum" : ""}">
+        <div class="article-main">
+          <header class="article-header">
+            <div class="article-meta-row">
+              <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
+              ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+            </div>
+            <h1>${escapeHtml(post.title)}</h1>
+            <div class="article-actions">
+              ${renderPills(post)}
+              <a class="edit-link-btn" href="edit.html?id=${encodeURIComponent(post.id)}">수정</a>
+              <button type="button" class="copy-link-btn" id="copy-link">링크 복사</button>
+            </div>
+          </header>
+          <aside id="article-toc" class="article-toc" hidden aria-label="목차"></aside>
+          <div class="article-body" id="article-body"></div>
         </div>
-        <h1>${escapeHtml(post.title)}</h1>
-        <div class="article-actions">
-          ${renderPills(post)}
-          <a class="edit-link-btn" href="edit.html?id=${encodeURIComponent(post.id)}">수정</a>
-          <button type="button" class="copy-link-btn" id="copy-link">링크 복사</button>
-        </div>
-      </header>
-      ${scrum}
-      <aside id="article-toc" class="article-toc" hidden aria-label="목차"></aside>
-      <div class="article-body" id="article-body"></div>
+        ${hasScrum ? `<aside class="article-scrum">${scrum}</aside>` : ""}
+      </div>
     `;
 
     const body = document.getElementById("article-body");
