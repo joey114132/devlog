@@ -170,6 +170,48 @@ html[data-theme="dark"] .top-bar {
   font-size: 0.88rem;
 }
 
+.write-fab {
+  position: fixed;
+  top: 1rem;
+  right: 8.5rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.write-fab:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px rgba(28, 25, 23, 0.12);
+}
+
+.write-fab-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .write-fab {
+    right: 4.5rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .write-fab-label {
+    display: none;
+  }
+}
+
 .menu-fab {
   position: fixed;
   top: 1rem;
@@ -674,8 +716,9 @@ body.menu-open .prefs-panel {
   margin-top: 0.85rem;
 }
 
+.edit-link-btn,
 .copy-link-btn {
-  margin-left: auto;
+  margin-left: 0;
   padding: 0.4rem 0.75rem;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -687,10 +730,27 @@ body.menu-open .prefs-panel {
   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
+.edit-link-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.edit-link-btn:hover,
 .copy-link-btn:hover {
   border-color: var(--accent);
   color: var(--ink);
   transform: translateY(-1px);
+}
+
+.article-actions .copy-link-btn {
+  margin-left: auto;
 }
 
 .copy-link-btn.is-success {
@@ -918,4 +978,252 @@ html[data-theme="dark"] .hljs {
 
 .footer-meta {
   margin: 0;
+}
+
+.scrum-board {
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent-soft) 35%, var(--bg-card));
+}
+
+.scrum-board-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.scrum-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+@media (min-width: 720px) {
+  .scrum-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.scrum-label {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.scrum-text {
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+.scrum-text p {
+  margin: 0 0 0.35rem;
+}
+
+.scrum-text ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.scrum-compact {
+  margin: 0.35rem 0 0.5rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.scrum-compact li {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  line-height: 1.45;
+}
+
+.scrum-compact strong {
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+.layout-editor {
+  max-width: calc(var(--max) + 8rem);
+}
+
+.editor-header h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}
+
+.editor-status {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.editor-status[data-kind="ok"] {
+  color: color-mix(in srgb, var(--accent) 80%, var(--ink));
+}
+
+.editor-status[data-kind="warn"] {
+  color: #b45309;
+}
+
+.editor-status[data-kind="error"] {
+  color: #b91c1c;
+}
+
+.editor-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0.85rem;
+}
+
+.editor-tab {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.editor-tab.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.editor-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.editor-panel.is-hidden {
+  display: none;
+}
+
+.editor-meta,
+.editor-scrum {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.editor-meta legend,
+.editor-scrum legend {
+  padding: 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.editor-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.editor-field-wide {
+  grid-column: 1 / -1;
+}
+
+.editor-field,
+.scrum-field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+
+.editor-field input,
+.editor-field textarea,
+.scrum-field textarea,
+.editor-body {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.editor-field input:focus,
+.editor-field textarea:focus,
+.scrum-field textarea:focus,
+.editor-body:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.editor-body,
+.editor-preview-panel .article-body {
+  min-height: 16rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-primary {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }

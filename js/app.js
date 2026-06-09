@@ -31,8 +31,13 @@ function renderPills(post) {
   ].join("");
 }
 
+function renderScrum(post, compact = false) {
+  return window.DevlogScrum?.renderScrumCard(post.scrum, { compact }) || "";
+}
+
 function renderPostCard(post) {
   const read = readingLabel(post.reading_minutes);
+  const scrum = renderScrum(post, true);
   return `
     <a class="post-card" href="post.html?id=${encodeURIComponent(post.id)}" data-date="${escapeHtml(post.date)}">
       <div class="post-card-top">
@@ -40,6 +45,7 @@ function renderPostCard(post) {
         ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
       </div>
       <h2>${escapeHtml(post.title)}</h2>
+      ${scrum}
       <p>${escapeHtml(post.excerpt)}</p>
       ${renderPills(post)}
     </a>
@@ -122,6 +128,7 @@ async function initPost() {
     window.DevlogFeatures?.setPageMeta(post);
 
     const read = readingLabel(post.reading_minutes);
+    const scrum = renderScrum(post, false);
     root.innerHTML = `
       <a class="back-link" href="index.html">← 목록</a>
       <header class="article-header">
@@ -132,9 +139,11 @@ async function initPost() {
         <h1>${escapeHtml(post.title)}</h1>
         <div class="article-actions">
           ${renderPills(post)}
+          <a class="edit-link-btn" href="edit.html?id=${encodeURIComponent(post.id)}">수정</a>
           <button type="button" class="copy-link-btn" id="copy-link">링크 복사</button>
         </div>
       </header>
+      ${scrum}
       <aside id="article-toc" class="article-toc" hidden aria-label="목차"></aside>
       <div class="article-body" id="article-body"></div>
     `;

@@ -17,6 +17,24 @@ SITE_URL = os.environ.get("DEVLOG_SITE_URL", "https://joey114132.github.io/devlo
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 TITLE_RE = re.compile(r"^#\s+(.+)$", re.MULTILINE)
+SCRUM_BLOCK_RE = re.compile(
+    r"##\s*Daily\s*Scrum\s*\n([\s\S]*?)(?=\n---\s*\n|\n#\s+[^\n#]|\s*$)",
+    re.IGNORECASE,
+)
+SCRUM_SECTION_RES = {
+    "yesterday": re.compile(
+        r"###\s*어제\s*한?\s*일\s*\n([\s\S]*?)(?=\n###\s*|\n---\s*\n|\n#\s+[^\n#]|$)",
+        re.IGNORECASE,
+    ),
+    "today": re.compile(
+        r"###\s*오늘\s*할?\s*일\s*\n([\s\S]*?)(?=\n###\s*|\n---\s*\n|\n#\s+[^\n#]|$)",
+        re.IGNORECASE,
+    ),
+    "share": re.compile(
+        r"###\s*공유할?\s*거\s*\n([\s\S]*?)(?=\n###\s*|\n---\s*\n|\n#\s+[^\n#]|$)",
+        re.IGNORECASE,
+    ),
+}
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -42,6 +60,19 @@ def extract_title(body: str, slug: str) -> str:
 def reading_minutes(body: str, wpm: int = 220) -> int:
     words = len(re.findall(r"\S+", body))
     return max(1, round(words / wpm))
+
+
+def extract_scrum(body: str) -> dict[str, str]:
+    block = SCRUM_BLOCK_RE.search(body)
+    if not block:
+        return {"yesterday": "", "today": "", "share": ""}
+
+    scrum_text = block.group(0)
+    result: dict[str, str] = {}
+    for key, pattern in SCRUM_SECTION_RES.items():
+        match = pattern.search(scrum_text)
+        result[key] = match.group(1).strip() if match else ""
+    return result
 
 
 def excerpt(body: str, limit: int = 140) -> str:
@@ -80,6 +111,7 @@ def collect_posts() -> list[dict]:
         date = meta.get("date", date_folder)
         title = extract_title(body, slug)
 
+        scrum = extract_scrum(body)
         posts.append(
             {
                 "id": post_id,
@@ -88,6 +120,7 @@ def collect_posts() -> list[dict]:
                 "slug": slug,
                 "project": meta.get("project", ""),
                 "tags": [t.strip() for t in meta.get("tags", "").strip("[]").split(",") if t.strip()],
+                "scrum": scrum,
                 "excerpt": excerpt(body),
                 "reading_minutes": reading_minutes(body),
                 "markdown": body.strip(),

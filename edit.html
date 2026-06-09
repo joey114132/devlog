@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>글쓰기 — Joey Devlog</title>
+    <meta name="description" content="devlog 작성 및 수정" />
+    <script>
+      (function () {
+        try {
+          var p = JSON.parse(localStorage.getItem("devlog-prefs") || "{}");
+          if (p.theme === "light" || p.theme === "dark") {
+            document.documentElement.dataset.theme = p.theme;
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="page-editor">
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div class="brand">
+          <h1><a href="index.html">Joey Devlog</a></h1>
+          <p>글쓰기 · 수정</p>
+        </div>
+      </div>
+    </div>
+
+    <main class="layout layout-editor">
+      <a class="back-link" href="index.html">← 목록</a>
+
+      <header class="editor-header">
+        <h1>devlog 작성</h1>
+        <p id="editor-status" class="editor-status" data-kind="info">연결 확인 중…</p>
+      </header>
+
+      <div class="editor-tabs" role="tablist">
+        <button type="button" class="editor-tab is-active" data-tab="write">작성</button>
+        <button type="button" class="editor-tab" data-tab="preview">미리보기</button>
+      </div>
+
+      <div id="panel-write" class="editor-panel">
+        <fieldset class="editor-meta">
+          <legend>메타</legend>
+          <div class="editor-grid">
+            <label class="editor-field">
+              <span>날짜</span>
+              <input type="date" id="edit-date" class="editor-field" required />
+            </label>
+            <label class="editor-field">
+              <span>슬러그 (파일명)</span>
+              <input type="text" id="edit-slug" placeholder="daily" pattern="[a-z0-9][a-z0-9-]*" />
+            </label>
+            <label class="editor-field editor-field-wide">
+              <span>제목</span>
+              <input type="text" id="edit-title" placeholder="오늘 한 일" />
+            </label>
+            <label class="editor-field">
+              <span>프로젝트</span>
+              <input type="text" id="edit-project" placeholder="cursor-harness" />
+            </label>
+            <label class="editor-field">
+              <span>태그 (쉼표)</span>
+              <input type="text" id="edit-tags" placeholder="devlog, harness" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="editor-scrum">
+          <legend>Daily Scrum</legend>
+          <label class="scrum-field">
+            <span>어제 한 일</span>
+            <textarea id="scrum-yesterday" class="scrum-field" rows="4" placeholder="- 어제 마친 작업"></textarea>
+          </label>
+          <label class="scrum-field">
+            <span>오늘 할 일</span>
+            <textarea id="scrum-today" class="scrum-field" rows="4" placeholder="- 오늘 할 작업"></textarea>
+          </label>
+          <label class="scrum-field">
+            <span>공유할 거</span>
+            <textarea id="scrum-share" class="scrum-field" rows="3" placeholder="- 팀에 공유할 내용"></textarea>
+          </label>
+        </fieldset>
+
+        <label class="editor-field editor-field-wide">
+          <span>본문 (마크다운)</span>
+          <textarea id="edit-body" class="editor-body" rows="14" placeholder="자유 메모, 세부 내용…"></textarea>
+        </label>
+      </div>
+
+      <div id="panel-preview" class="editor-panel editor-preview-panel is-hidden">
+        <article id="edit-preview" class="article-body editor-preview"></article>
+      </div>
+
+      <div class="editor-actions">
+        <button type="button" id="btn-save" class="btn-primary" disabled>저장 &amp; 게시</button>
+        <button type="button" id="btn-append" class="btn-secondary" disabled>이어쓰기 (append)</button>
+        <button type="button" id="btn-download" class="btn-secondary">md 다운로드</button>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
+      <p class="footer-meta">
+        로컬 저장: <code>scripts/serve-dev.sh</code>
+      </p>
+    </footer>
+
+    <script src="js/scrum.js" defer></script>
+    <script src="js/editor.js" defer></script>
+  </body>
+</html>
