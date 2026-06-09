@@ -47,29 +47,34 @@
       <div id="reading-progress" class="reading-progress"></div>
     </div>
 
-    <div class="top-bar">
-      <div class="top-bar-inner">
+    <header class="app-header">
+      <div class="app-header__inner">
         <div class="brand">
           <h1><a href="index.html">Joey Devlog</a></h1>
         </div>
+        <div class="app-actions">
+          <a class="header-btn header-btn--write" href="edit.html">
+            <span aria-hidden="true">✎</span>
+            <span>글쓰기</span>
+          </a>
+          <button
+            type="button"
+            class="header-btn header-btn--menu menu-fab"
+            id="menu-fab"
+            aria-label="설정 메뉴 열기"
+            aria-expanded="false"
+            aria-controls="prefs-panel"
+          >
+            <span class="menu-fab-bars" aria-hidden="true">
+              <span class="menu-fab-bar"></span>
+              <span class="menu-fab-bar"></span>
+              <span class="menu-fab-bar"></span>
+            </span>
+            <span class="menu-fab-label">설정</span>
+          </button>
+        </div>
       </div>
-    </div>
-
-    <button
-      type="button"
-      class="menu-fab"
-      id="menu-fab"
-      aria-label="설정 메뉴 열기"
-      aria-expanded="false"
-      aria-controls="prefs-panel"
-    >
-      <span class="menu-fab-bars" aria-hidden="true">
-        <span class="menu-fab-bar"></span>
-        <span class="menu-fab-bar"></span>
-        <span class="menu-fab-bar"></span>
-      </span>
-      <span class="menu-fab-label">설정</span>
-    </button>
+    </header>
 
     <div id="prefs-overlay" class="prefs-overlay" hidden></div>
     <aside id="prefs-panel" class="prefs-panel" hidden aria-label="사이트 설정">
@@ -105,10 +110,12 @@
       </form>
     </aside>
 
-    <main class="layout layout-article">
-      <article id="article" class="article" aria-live="polite">
-        <p class="empty">불러오는 중…</p>
-      </article>
+    <main class="page page--article">
+      <div class="page__inner layout-article">
+        <article id="article" class="article" aria-live="polite">
+          <p class="empty">불러오는 중…</p>
+        </article>
+      </div>
     </main>
 
     <button type="button" id="back-to-top" class="back-to-top" aria-label="맨 위로">

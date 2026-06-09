@@ -38,35 +38,35 @@
   <body>
     <div class="grain" aria-hidden="true"></div>
 
-    <div class="top-bar">
-      <div class="top-bar-inner">
+    <header class="app-header">
+      <div class="app-header__inner">
         <div class="brand">
           <h1><a href="index.html">Joey Devlog</a></h1>
-          <p>개발 다이어리 — 말하듯 남긴 작업 기록</p>
+          <p class="brand-tagline">개발 다이어리 — 말하듯 남긴 작업 기록</p>
+        </div>
+        <div class="app-actions">
+          <a class="header-btn header-btn--write" href="edit.html">
+            <span aria-hidden="true">✎</span>
+            <span>글쓰기</span>
+          </a>
+          <button
+            type="button"
+            class="header-btn header-btn--menu menu-fab"
+            id="menu-fab"
+            aria-label="설정 메뉴 열기"
+            aria-expanded="false"
+            aria-controls="prefs-panel"
+          >
+            <span class="menu-fab-bars" aria-hidden="true">
+              <span class="menu-fab-bar"></span>
+              <span class="menu-fab-bar"></span>
+              <span class="menu-fab-bar"></span>
+            </span>
+            <span class="menu-fab-label">설정</span>
+          </button>
         </div>
       </div>
-    </div>
-
-    <a class="write-fab" href="edit.html" aria-label="새 devlog 작성">
-      <span class="write-fab-icon" aria-hidden="true">✎</span>
-      <span class="write-fab-label">글쓰기</span>
-    </a>
-
-    <button
-      type="button"
-      class="menu-fab"
-      id="menu-fab"
-      aria-label="설정 메뉴 열기"
-      aria-expanded="false"
-      aria-controls="prefs-panel"
-    >
-      <span class="menu-fab-bars" aria-hidden="true">
-        <span class="menu-fab-bar"></span>
-        <span class="menu-fab-bar"></span>
-        <span class="menu-fab-bar"></span>
-      </span>
-      <span class="menu-fab-label">설정</span>
-    </button>
+    </header>
 
     <div id="prefs-overlay" class="prefs-overlay" hidden></div>
     <aside id="prefs-panel" class="prefs-panel" hidden aria-label="사이트 설정">
@@ -102,10 +102,14 @@
       </form>
     </aside>
 
-    <main class="layout">
-      <section id="site-hero" class="site-hero" aria-label="소개"></section>
+    <main class="page page--index">
+      <div class="page__inner">
+        <section class="index-intro" aria-label="소개">
+          <div id="site-hero" class="site-hero"></div>
+          <aside id="today-scrum" class="today-scrum" aria-label="오늘 스크럼"></aside>
+        </section>
 
-      <div class="index-tools">
+        <div class="index-tools">
         <label class="search-field">
           <span class="visually-hidden">검색</span>
           <input
@@ -119,8 +123,9 @@
         <p id="result-count" class="result-count" aria-live="polite"></p>
       </div>
 
-      <div id="post-list" class="timeline" aria-live="polite">
-        <p class="empty">불러오는 중…</p>
+        <div id="post-list" class="timeline" aria-live="polite">
+          <p class="empty">불러오는 중…</p>
+        </div>
       </div>
     </main>
 

@@ -27,16 +27,23 @@
   <body class="page-editor">
     <div class="grain" aria-hidden="true"></div>
 
-    <div class="top-bar">
-      <div class="top-bar-inner">
+    <header class="app-header">
+      <div class="app-header__inner">
         <div class="brand">
           <h1><a href="index.html">Joey Devlog</a></h1>
-          <p>글쓰기 · 수정</p>
+          <p class="brand-tagline">글쓰기 · 수정</p>
+        </div>
+        <div class="app-actions">
+          <a class="header-btn header-btn--write is-active" href="edit.html" aria-current="page">
+            <span aria-hidden="true">✎</span>
+            <span>글쓰기</span>
+          </a>
         </div>
       </div>
-    </div>
+    </header>
 
-    <main class="layout layout-editor">
+    <main class="page page--editor">
+      <div class="page__inner layout-editor">
       <a class="back-link" href="index.html">← 목록</a>
 
       <header class="editor-header">
@@ -141,6 +148,7 @@
         <button type="button" id="btn-save" class="btn-primary" disabled>저장 &amp; 게시</button>
         <button type="button" id="btn-append" class="btn-secondary" disabled>이어쓰기 (append)</button>
         <button type="button" id="btn-download" class="btn-secondary">md 다운로드</button>
+      </div>
       </div>
     </main>
 

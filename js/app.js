@@ -103,6 +103,7 @@ async function initIndex() {
   try {
     const posts = await loadPosts();
     window.DevlogFeatures?.initHero(posts);
+    window.DevlogFeatures?.initTodayScrum(posts);
     window.DevlogFeatures?.initIndexTools(posts, (filtered) => renderIndex(filtered, root));
   } catch (err) {
     root.innerHTML = `<p class="empty">데이터를 불러오지 못했어요. ${escapeHtml(err.message)}</p>`;

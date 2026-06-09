@@ -25,14 +25,53 @@
 
     root.innerHTML = `
       <div class="hero-inner">
-        <p class="hero-eyebrow">Editorial dev diary</p>
-        <p class="hero-lead">Cursor 세션과 하네스 작업을 말하듯 남기는 기록입니다.</p>
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Editorial dev diary</p>
+          <p class="hero-lead">Cursor 세션과 하네스 작업을 말하듯 남기는 기록입니다.</p>
+        </div>
         <dl class="hero-stats">
           <div><dt>글</dt><dd>${posts.length}</dd></div>
           <div><dt>프로젝트</dt><dd>${projects.size || "—"}</dd></div>
           <div><dt>최근</dt><dd>${latest.date}</dd></div>
         </dl>
       </div>
+    `;
+  }
+
+  function initTodayScrum(posts) {
+    const root = document.getElementById("today-scrum");
+    if (!root || !window.DevlogScrum) return;
+
+    const today = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const todayIso = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+    const todayPost =
+      posts.find((p) => p.date === todayIso && p.scrum && (p.scrum.yesterday || p.scrum.today || p.scrum.share)) ||
+      posts.find((p) => p.scrum && (p.scrum.yesterday || p.scrum.today || p.scrum.share));
+
+    root.hidden = false;
+
+    const hasScrum =
+      todayPost?.scrum &&
+      (todayPost.scrum.yesterday || todayPost.scrum.today || todayPost.scrum.share);
+    const card = hasScrum
+      ? window.DevlogScrum.renderScrumCard(todayPost.scrum, { compact: false })
+      : "";
+
+    if (!card) {
+      root.innerHTML = `
+        <p class="today-scrum-label">오늘 스크럼</p>
+        <p class="today-scrum-empty">어제 한 일 · 오늘 할 일 · 공유할 거를 적어 두면 여기에 보여요.</p>
+        <a class="today-scrum-link" href="edit.html">스크럼 작성</a>
+      `;
+      return;
+    }
+
+    root.innerHTML = `
+      <p class="today-scrum-label">오늘 스크럼</p>
+      ${card.replace('class="scrum-board scrum-board--side"', 'class="scrum-board scrum-board--side scrum-board--panel"')}
+      <a class="today-scrum-link" href="post.html?id=${encodeURIComponent(todayPost.id)}">전체 글 보기</a>
     `;
   }
 
@@ -216,6 +255,7 @@
   window.DevlogFeatures = {
     monthLabel,
     initHero,
+    initTodayScrum,
     initIndexTools,
     initReadingProgress,
     initCopyLink,
