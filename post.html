@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Joey Devlog</title>
+    <meta name="description" content="Joey의 개발 다이어리" />
+    <meta property="og:title" content="Joey Devlog" />
+    <meta property="og:description" content="Joey의 개발 다이어리" />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="alternate" type="application/rss+xml" title="Joey Devlog RSS" href="feed.xml" />
     <script>
       (function () {
         try {
@@ -17,13 +23,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
+      media="(prefers-color-scheme: dark)"
     />
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
   </head>
   <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div id="reading-progress-wrap" class="reading-progress-wrap" aria-hidden="true">
+      <div id="reading-progress" class="reading-progress"></div>
+    </div>
+
     <div class="top-bar">
       <div class="top-bar-inner">
         <div class="brand">
@@ -82,21 +105,27 @@
       </form>
     </aside>
 
-    <main class="layout">
+    <main class="layout layout-article">
       <article id="article" class="article" aria-live="polite">
         <p class="empty">불러오는 중…</p>
       </article>
     </main>
 
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="맨 위로">
+      ↑
+    </button>
+
     <footer class="site-footer">
       <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
       <p class="footer-meta">
         <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
+        · <a href="feed.xml">RSS</a>
         · 소스 <code>~/devlogs</code>
       </p>
     </footer>
 
     <script src="js/prefs.js" defer></script>
+    <script src="js/features.js" defer></script>
     <script src="js/app.js" defer></script>
   </body>
 </html>

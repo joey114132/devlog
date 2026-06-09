@@ -8,6 +8,15 @@
       name="description"
       content="Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록"
     />
+    <meta property="og:title" content="Joey Devlog" />
+    <meta
+      property="og:description"
+      content="Joey의 개발 다이어리 — Cursor 세션, 하네스, 프로젝트 작업 기록"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://joey114132.github.io/devlog/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="alternate" type="application/rss+xml" title="Joey Devlog RSS" href="feed.xml" />
     <script>
       (function () {
         try {
@@ -21,12 +30,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <div class="grain" aria-hidden="true"></div>
+
     <div class="top-bar">
       <div class="top-bar-inner">
         <div class="brand">
@@ -87,20 +98,42 @@
     </aside>
 
     <main class="layout">
-      <div id="post-list" class="card-list" aria-live="polite">
+      <section id="site-hero" class="site-hero" aria-label="소개"></section>
+
+      <div class="index-tools">
+        <label class="search-field">
+          <span class="visually-hidden">검색</span>
+          <input
+            type="search"
+            id="post-search"
+            placeholder="제목, 태그, 프로젝트 검색…"
+            autocomplete="off"
+          />
+        </label>
+        <div id="tag-filters" class="tag-filters" role="group" aria-label="태그 필터"></div>
+        <p id="result-count" class="result-count" aria-live="polite"></p>
+      </div>
+
+      <div id="post-list" class="timeline" aria-live="polite">
         <p class="empty">불러오는 중…</p>
       </div>
     </main>
+
+    <button type="button" id="back-to-top" class="back-to-top" aria-label="맨 위로">
+      ↑
+    </button>
 
     <footer class="site-footer">
       <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
       <p class="footer-meta">
         <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
+        · <a href="feed.xml">RSS</a>
         · 소스 <code>~/devlogs</code>
       </p>
     </footer>
 
     <script src="js/prefs.js" defer></script>
+    <script src="js/features.js" defer></script>
     <script src="js/app.js" defer></script>
   </body>
 </html>

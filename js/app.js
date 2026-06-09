@@ -19,6 +19,65 @@ function formatDate(isoDate) {
   });
 }
 
+function readingLabel(minutes) {
+  if (!minutes) return "";
+  return `${minutes}분 읽기`;
+}
+
+function renderPills(post) {
+  return [
+    post.project ? `<span class="meta-pill">${escapeHtml(post.project)}</span>` : "",
+    ...(post.tags || []).map((tag) => `<span class="meta-pill">${escapeHtml(tag)}</span>`),
+  ].join("");
+}
+
+function renderPostCard(post) {
+  const read = readingLabel(post.reading_minutes);
+  return `
+    <a class="post-card" href="post.html?id=${encodeURIComponent(post.id)}" data-date="${escapeHtml(post.date)}">
+      <div class="post-card-top">
+        <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
+        ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+      </div>
+      <h2>${escapeHtml(post.title)}</h2>
+      <p>${escapeHtml(post.excerpt)}</p>
+      ${renderPills(post)}
+    </a>
+  `;
+}
+
+function groupByMonth(posts) {
+  const groups = new Map();
+  posts.forEach((post) => {
+    const key = post.date.slice(0, 7);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(post);
+  });
+  return [...groups.entries()];
+}
+
+function renderIndex(posts, root) {
+  if (!posts.length) {
+    root.innerHTML =
+      '<p class="empty">조건에 맞는 글이 없어요. 검색어나 필터를 바꿔 보세요.</p>';
+    return;
+  }
+
+  const monthLabel = window.DevlogFeatures?.monthLabel || ((d) => d);
+  root.innerHTML = groupByMonth(posts)
+    .map(([monthKey, monthPosts]) => {
+      const label = monthLabel(`${monthKey}-01`);
+      const cards = monthPosts.map(renderPostCard).join("");
+      return `
+        <section class="month-group">
+          <h2 class="month-heading"><span>${escapeHtml(label)}</span></h2>
+          <div class="card-list">${cards}</div>
+        </section>
+      `;
+    })
+    .join("");
+}
+
 async function loadPosts() {
   const res = await fetch(DATA_URL);
   if (!res.ok) {
@@ -28,38 +87,14 @@ async function loadPosts() {
   return data.posts ?? [];
 }
 
-function renderIndex(posts, root) {
-  if (!posts.length) {
-    root.innerHTML =
-      '<p class="empty">아직 올라온 글이 없어요. <code>scripts/build.py</code> 를 돌려 보세요.</p>';
-    return;
-  }
-
-  root.innerHTML = posts
-    .map((post) => {
-      const pills = [
-        post.project ? `<span class="meta-pill">${escapeHtml(post.project)}</span>` : "",
-        ...post.tags.map((tag) => `<span class="meta-pill">${escapeHtml(tag)}</span>`),
-      ].join("");
-
-      return `
-        <a class="post-card" href="post.html?id=${encodeURIComponent(post.id)}">
-          <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
-          <h2>${escapeHtml(post.title)}</h2>
-          <p>${escapeHtml(post.excerpt)}</p>
-          ${pills}
-        </a>
-      `;
-    })
-    .join("");
-}
-
 async function initIndex() {
   const root = document.getElementById("post-list");
   if (!root) return;
+
   try {
     const posts = await loadPosts();
-    renderIndex(posts, root);
+    window.DevlogFeatures?.initHero(posts);
+    window.DevlogFeatures?.initIndexTools(posts, (filtered) => renderIndex(filtered, root));
   } catch (err) {
     root.innerHTML = `<p class="empty">데이터를 불러오지 못했어요. ${escapeHtml(err.message)}</p>`;
   }
@@ -84,25 +119,32 @@ async function initPost() {
       return;
     }
 
-    document.title = `${post.title} — Joey Devlog`;
+    window.DevlogFeatures?.setPageMeta(post);
 
-    const pills = [
-      post.project ? `<span class="meta-pill">${escapeHtml(post.project)}</span>` : "",
-      ...post.tags.map((tag) => `<span class="meta-pill">${escapeHtml(tag)}</span>`),
-    ].join("");
-
+    const read = readingLabel(post.reading_minutes);
     root.innerHTML = `
       <a class="back-link" href="index.html">← 목록</a>
       <header class="article-header">
-        <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
+        <div class="article-meta-row">
+          <time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time>
+          ${read ? `<span class="read-time">${escapeHtml(read)}</span>` : ""}
+        </div>
         <h1>${escapeHtml(post.title)}</h1>
-        ${pills}
+        <div class="article-actions">
+          ${renderPills(post)}
+          <button type="button" class="copy-link-btn" id="copy-link">링크 복사</button>
+        </div>
       </header>
+      <aside id="article-toc" class="article-toc" hidden aria-label="목차"></aside>
       <div class="article-body" id="article-body"></div>
     `;
 
     const body = document.getElementById("article-body");
     body.innerHTML = marked.parse(post.markdown, { breaks: true, gfm: true });
+    window.DevlogFeatures?.enhanceArticle(body);
+    window.DevlogFeatures?.initCopyLink(post.id);
+    window.DevlogFeatures?.initReadingProgress();
+    window.DevlogFeatures?.initBackToTop();
   } catch (err) {
     root.innerHTML = `<p class="empty">불러오기 실패: ${escapeHtml(err.message)}</p>`;
   }
@@ -111,4 +153,7 @@ async function initPost() {
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("post-list")) initIndex();
   if (document.getElementById("article")) initPost();
+  if (!document.getElementById("article")) {
+    window.DevlogFeatures?.initBackToTop();
+  }
 });
