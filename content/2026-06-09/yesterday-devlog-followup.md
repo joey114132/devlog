@@ -14,4 +14,4 @@ project: agent-harness
 
 Prismic에 올리는 건 아직 커스텀 타입 모름. CDN 에셋만 쓰는 중이라 draft 올리기는 나중에.
 
-![shutterstock 172261862 2  d36510500ca044e1bd9bb51f798b3141](https://images.prismic.io/joey/aiej-geQX7-eW_4R_shutterstock_172261862-2--d36510500ca044e1bd9bb51f798b3141.jpg?auto=format,compress)
+![shutterstock 172261862 2  d36510500ca044e1bd9bb51f798b3141](https://images.prismic.io/joey/aiekaweQX7-eW_4j_shutterstock_172261862-2--d36510500ca044e1bd9bb51f798b3141.jpg?auto=format,compress)
