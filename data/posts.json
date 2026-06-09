@@ -1,16 +1,19 @@
 {
-  "generated_at": "2026-06-09T15:27:38+09:00",
+  "generated_at": "2026-06-09T15:30:20+09:00",
   "source": "/home/joey/devlogs",
   "site_url": "https://joey114132.github.io/devlog",
-  "count": 7,
+  "count": 8,
   "tags": [
     "agent-harness",
     "devlog",
     "devlog-site",
     "editor",
     "media",
+    "pingdergarten",
+    "presentation",
     "prismic",
-    "ui"
+    "ui",
+    "vercel"
   ],
   "posts": [
     {
@@ -28,6 +31,26 @@
       "excerpt": "어제 로컬에 devlog 스킬 세 개 붙였음. harness 뭐 쓰는지 보고, refactor 스킬 어디 있는지 찾아주고, 한국어로 md나 Prismic에 남기는 흐름 만들라고 해서 `devlog-ko`, `devlog-ko-markdown`, `d…",
       "reading_minutes": 1,
       "markdown": "# 어제 devlog 쓰고 나서 정리\n\n어제 로컬에 devlog 스킬 세 개 붙였음. harness 뭐 쓰는지 보고, refactor 스킬 어디 있는지 찾아주고, 한국어로 md나 Prismic에 남기는 흐름 만들라고 해서 `devlog-ko`, `devlog-ko-markdown`, `devlog-ko-prismic` 이렇게 나눴다.\n\n로컬 저장은 `~/devlogs/2026-06-08/skills-devlog-setup.md`에 첫 샘플 넣었고, 날짜별 폴더 (`mkdir -p`) 규칙도 스킬에 박아둠.\n\n오늘은 그 어제 일지에 대한 후속 메모 쓰라고 해서 `2026-06-09` 폴더에 이 파일 만듦. 마무리 전에 grep이랑 파일 있는지 검증은 돌려봤고, UI serve나 deploy는 안 건드려서 그건 스킵.\n\n근데 템플릿이 보고서 같다고 피드백 와서 — 앞으로는 **dev diary** 느낌으로 쓰기로 스킬 톤 바꿨다. 표랑 `## 요청` / `## 검증` 같은 거 빼고 말하듯이.\n\nPrismic에 올리는 건 아직 커스텀 타입 모름. CDN 에셋만 쓰는 중이라 draft 올리기는 나중에."
+    },
+    {
+      "id": "2026-06-09/vercel-pingdergarten-deck",
+      "date": "2026-06-09",
+      "title": "pingdergarten 덱은 왜 Vercel?",
+      "slug": "vercel-pingdergarten-deck",
+      "project": "pingdergarten",
+      "tags": [
+        "devlog",
+        "vercel",
+        "presentation"
+      ],
+      "scrum": {
+        "yesterday": "- devlog 에디터 본문 라이브 미리보기·미디어 삭제 UI\n- devlog-site `main` push",
+        "today": "- 포트폴리오 4번 프로젝트 덱이 왜 Vercel인지 정리해서 devlog에 남기기",
+        "share": "- pingdergarten 최종 슬라이드: https://preso-slides-only.vercel.app/\n- 포트폴리오 `config.js` → `pingdergartenDeck` 링크"
+      },
+      "excerpt": "- devlog 에디터 본문 라이브 미리보기·미디어 삭제 UI - devlog-site `main` push - 포트폴리오 4번 프로젝트 덱이 왜 Vercel인지 정리해서 devlog에 남기기 - pingdergarten 최종 슬라이드: https:…",
+      "reading_minutes": 1,
+      "markdown": "## Daily Scrum\n\n### 어제 한 일\n- devlog 에디터 본문 라이브 미리보기·미디어 삭제 UI\n- devlog-site `main` push\n\n### 오늘 할 일\n- 포트폴리오 4번 프로젝트 덱이 왜 Vercel인지 정리해서 devlog에 남기기\n\n### 공유할 거\n- pingdergarten 최종 슬라이드: https://preso-slides-only.vercel.app/\n- 포트폴리오 `config.js` → `pingdergartenDeck` 링크\n\n---\n\n# pingdergarten 덱은 왜 Vercel?\n\n애디닝 Physical AI 네 프로젝트 중 **4번(pingdergarten / EduPing)** 덱 URL만 Vercel에 올라가 있음. 로봇 앱 전체가 Vercel에 있는 게 아니라, **Reveal.js 최종 발표 슬라이드**만 `preso-slides-only.vercel.app`에 static으로 서빙하는 구조.\n\n## 네 프로젝트 덱 호스팅이 제각각인 이유\n\n| 순서 | 프로젝트 | 덱 링크 |\n| --- | --- | --- |\n| 01 Gesto | DL | Google Slides |\n| 02 오주의 마법사 | IoT | Prismic CDN (PPTX) |\n| 03 ShopPinkki | ROS | Netlify (`shoppinkki-presentation.netlify.app`) |\n| 04 pingdergarten | PAI | **Vercel** (`preso-slides-only.vercel.app`) |\n\n팀마다 덱 형식이 달랐음. Gesto는 슬라이드가 Google에, IoT는 PPTX를 Prismic에, ShopPinkki는 HTML 덱을 Netlify에. pingdergarten은 `physical-ai-repo-2/presentation/final-v3/` 아래 **빌드 없는 정적 HTML + Reveal.js**라서, 발표 직전에 **공유 URL 하나**만 필요했고 그게 Vercel로 나감.\n\n## Vercel을 쓴 실무적인 이유 (추정 + repo 근거)\n\n1. **슬라이드만 따로 배포** — repo 이름/URL이 `preso-slides-only`인 것처럼, 로봇·ROS·Vue 앱과 분리한 **덱 전용** 배포.\n2. **미디어가 무거움** — `final-v3/.vercelignore`로 `slides/assets/media/**` 대부분 제외하고, 슬라이드가 실제로 쓰는 mp4/gif/png만 whitelist. Netlify도 가능하지만, Vercel 쪽 ignore + 재배포로 덱 크기를 줄인 흔적.\n3. **ShopPinkki는 이미 Netlify** — 3번 덱이 Netlify를 쓰고 있어서 4번은 Vercel 계정/프로젝트로 분리했을 가능성 (같은 호스트에 다 올릴 필요는 없었음).\n4. **정적 호스팅이면 충분** — `vercel.json`은 `cleanUrls`랑 Cache-Control 정도. SSR·API 없음.\n\n## Vercel이 *아닌* 것\n\n- EduPing **브라우저 teleop**, depth 하이파이브, ROS — lab / 로컬 / GitHub 코드\n- **포트폴리오 3D 미로** — Netlify (`joeyleeportfolio.netlify.app`)\n- **devlog** — GitHub Pages\n\nPrismic `images.prismic.io/joey`는 QnA·devlog **이미지 CDN**용이고, pingdergarten **슬라이드 사이트**랑은 별개.\n\n## 정리\n\nVercel은 pingdergarten **로봇 플랫폼** 선택이 아니라, **최종 Reveal.js 덱을 가볍게 올릴 공개 URL**로 쓴 것. 포트폴리오 4번 스테이션 덱 링크도 그 URL(`pingdergartenDeck`)로 맞춰 둔 상태."
     },
     {
       "id": "2026-06-09/prismic-media-devlog",
