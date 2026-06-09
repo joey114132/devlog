@@ -9,6 +9,32 @@ cd "$ROOT"
 
 python3 scripts/build.py
 
+# Skip push when only generated_at changed (posts content identical)
+if python3 - <<'PY'
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+path = Path("data/posts.json")
+if not path.exists():
+    sys.exit(1)
+
+current = json.loads(path.read_text(encoding="utf-8"))
+try:
+    previous = json.loads(
+        subprocess.check_output(["git", "show", "HEAD:data/posts.json"], stderr=subprocess.DEVNULL)
+    )
+except subprocess.CalledProcessError:
+    sys.exit(1)
+
+sys.exit(0 if current.get("posts") == previous.get("posts") else 1)
+PY
+then
+  echo "sync-github: posts unchanged — skip commit/push"
+  exit 0
+fi
+
 if git diff --quiet -- data/posts.json 2>/dev/null; then
   echo "sync-github: no changes in data/posts.json — skip commit/push"
   exit 0
