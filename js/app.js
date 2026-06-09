@@ -1,5 +1,3 @@
-import { initPrefs } from "./prefs.js";
-
 const DATA_URL = "data/posts.json";
 
 function escapeHtml(value) {
@@ -32,7 +30,8 @@ async function loadPosts() {
 
 function renderIndex(posts, root) {
   if (!posts.length) {
-    root.innerHTML = '<p class="empty">아직 올라온 글이 없어요. <code>scripts/build.py</code> 를 돌려 보세요.</p>';
+    root.innerHTML =
+      '<p class="empty">아직 올라온 글이 없어요. <code>scripts/build.py</code> 를 돌려 보세요.</p>';
     return;
   }
 
@@ -110,7 +109,6 @@ async function initPost() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initPrefs();
   if (document.getElementById("post-list")) initIndex();
   if (document.getElementById("article")) initPost();
 });

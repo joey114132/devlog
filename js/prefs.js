@@ -1,94 +1,124 @@
-const PREFS_KEY = "devlog-prefs";
-const DEFAULT_PREFS = {
-  theme: "system",
-  fontSize: "md",
-  lineHeight: "normal",
-};
+(function () {
+  const PREFS_KEY = "devlog-prefs";
+  const DEFAULT_PREFS = {
+    theme: "system",
+    fontSize: "md",
+    lineHeight: "normal",
+  };
 
-export function loadPrefs() {
-  try {
-    const raw = localStorage.getItem(PREFS_KEY);
-    if (!raw) return { ...DEFAULT_PREFS };
-    return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
-  } catch {
-    return { ...DEFAULT_PREFS };
-  }
-}
-
-export function savePrefs(prefs) {
-  localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
-}
-
-export function applyPrefs(prefs) {
-  const root = document.documentElement;
-
-  if (prefs.theme === "light" || prefs.theme === "dark") {
-    root.dataset.theme = prefs.theme;
-  } else {
-    delete root.dataset.theme;
+  function loadPrefs() {
+    try {
+      const raw = localStorage.getItem(PREFS_KEY);
+      if (!raw) return { ...DEFAULT_PREFS };
+      return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
+    } catch {
+      return { ...DEFAULT_PREFS };
+    }
   }
 
-  root.dataset.fontSize = prefs.fontSize;
-  root.dataset.lineHeight = prefs.lineHeight;
-}
+  function savePrefs(prefs) {
+    localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+  }
 
-function bindSelect(id, key, prefs, onChange) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.value = prefs[key];
-  el.addEventListener("change", () => {
-    prefs[key] = el.value;
-    savePrefs(prefs);
-    applyPrefs(prefs);
-    onChange?.(prefs);
-  });
-}
+  function applyPrefs(prefs) {
+    const root = document.documentElement;
 
-function setMenuOpen(open) {
-  const panel = document.getElementById("prefs-panel");
-  const overlay = document.getElementById("prefs-overlay");
-  const toggle = document.querySelector(".menu-toggle");
-  if (!panel || !overlay || !toggle) return;
+    if (prefs.theme === "light" || prefs.theme === "dark") {
+      root.dataset.theme = prefs.theme;
+    } else {
+      delete root.dataset.theme;
+    }
 
-  panel.hidden = !open;
-  overlay.hidden = !open;
-  toggle.setAttribute("aria-expanded", String(open));
-  document.body.classList.toggle("menu-open", open);
-}
+    root.dataset.fontSize = prefs.fontSize;
+    root.dataset.lineHeight = prefs.lineHeight;
+  }
 
-export function initPrefs() {
-  const prefs = loadPrefs();
-  applyPrefs(prefs);
+  function bindSelect(id, key, prefs) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = prefs[key];
+    el.addEventListener("change", () => {
+      prefs[key] = el.value;
+      savePrefs(prefs);
+      applyPrefs(prefs);
+    });
+  }
 
-  const toggle = document.querySelector(".menu-toggle");
-  const overlay = document.getElementById("prefs-overlay");
-  const closeBtn = document.getElementById("prefs-close");
-
-  toggle?.addEventListener("click", () => {
+  function setMenuOpen(open) {
     const panel = document.getElementById("prefs-panel");
-    setMenuOpen(Boolean(panel?.hidden));
-  });
+    const overlay = document.getElementById("prefs-overlay");
+    const toggle = document.getElementById("menu-fab");
+    if (!panel || !overlay || !toggle) return;
 
-  overlay?.addEventListener("click", () => setMenuOpen(false));
-  closeBtn?.addEventListener("click", () => setMenuOpen(false));
+    if (open) {
+      overlay.hidden = false;
+      panel.hidden = false;
+      requestAnimationFrame(() => {
+        document.body.classList.add("menu-open");
+        toggle.setAttribute("aria-expanded", "true");
+      });
+      return;
+    }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setMenuOpen(false);
-  });
+    document.body.classList.remove("menu-open");
+    toggle.setAttribute("aria-expanded", "false");
 
-  bindSelect("pref-theme", "theme", prefs);
-  bindSelect("pref-font-size", "fontSize", prefs);
-  bindSelect("pref-line-height", "lineHeight", prefs);
+    const onEnd = (event) => {
+      if (event.target !== panel && event.propertyName !== "transform") return;
+      panel.removeEventListener("transitionend", onEnd);
+      if (!document.body.classList.contains("menu-open")) {
+        overlay.hidden = true;
+        panel.hidden = true;
+      }
+    };
 
-  document.getElementById("pref-reset")?.addEventListener("click", () => {
-    const next = { ...DEFAULT_PREFS };
-    savePrefs(next);
-    applyPrefs(next);
-    document.getElementById("pref-theme").value = next.theme;
-    document.getElementById("pref-font-size").value = next.fontSize;
-    document.getElementById("pref-line-height").value = next.lineHeight;
-  });
-}
+    panel.addEventListener("transitionend", onEnd);
+    window.setTimeout(() => {
+      if (!document.body.classList.contains("menu-open")) {
+        overlay.hidden = true;
+        panel.hidden = true;
+      }
+    }, 320);
+  }
 
-// Apply theme early when loaded as module (before paint on fast connections)
-applyPrefs(loadPrefs());
+  function initPrefs() {
+    const prefs = loadPrefs();
+    applyPrefs(prefs);
+
+    const toggle = document.getElementById("menu-fab");
+    const overlay = document.getElementById("prefs-overlay");
+    const closeBtn = document.getElementById("prefs-close");
+
+    toggle?.addEventListener("click", () => {
+      setMenuOpen(!document.body.classList.contains("menu-open"));
+    });
+
+    overlay?.addEventListener("click", () => setMenuOpen(false));
+    closeBtn?.addEventListener("click", () => setMenuOpen(false));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    });
+
+    bindSelect("pref-theme", "theme", prefs);
+    bindSelect("pref-font-size", "fontSize", prefs);
+    bindSelect("pref-line-height", "lineHeight", prefs);
+
+    document.getElementById("pref-reset")?.addEventListener("click", () => {
+      const next = { ...DEFAULT_PREFS };
+      savePrefs(next);
+      applyPrefs(next);
+      document.getElementById("pref-theme").value = next.theme;
+      document.getElementById("pref-font-size").value = next.fontSize;
+      document.getElementById("pref-line-height").value = next.lineHeight;
+    });
+  }
+
+  applyPrefs(loadPrefs());
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPrefs);
+  } else {
+    initPrefs();
+  }
+})();

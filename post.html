@@ -29,23 +29,24 @@
         <div class="brand">
           <h1><a href="index.html">Joey Devlog</a></h1>
         </div>
-        <button
-          type="button"
-          class="menu-toggle"
-          aria-label="설정 메뉴 열기"
-          aria-expanded="false"
-          aria-controls="prefs-panel"
-        >
-          <svg class="menu-toggle-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M4 7a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1z"
-            />
-          </svg>
-          <span class="menu-toggle-label">설정</span>
-        </button>
       </div>
     </div>
+
+    <button
+      type="button"
+      class="menu-fab"
+      id="menu-fab"
+      aria-label="설정 메뉴 열기"
+      aria-expanded="false"
+      aria-controls="prefs-panel"
+    >
+      <span class="menu-fab-bars" aria-hidden="true">
+        <span class="menu-fab-bar"></span>
+        <span class="menu-fab-bar"></span>
+        <span class="menu-fab-bar"></span>
+      </span>
+      <span class="menu-fab-label">설정</span>
+    </button>
 
     <div id="prefs-overlay" class="prefs-overlay" hidden></div>
     <aside id="prefs-panel" class="prefs-panel" hidden aria-label="사이트 설정">
@@ -95,6 +96,7 @@
       </p>
     </footer>
 
-    <script src="js/app.js" type="module"></script>
+    <script src="js/prefs.js" defer></script>
+    <script src="js/app.js" defer></script>
   </body>
 </html>
