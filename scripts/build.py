@@ -11,6 +11,7 @@ from pathlib import Path
 
 DEVLOG_ROOT = Path(os.environ.get("DEVLOG_ROOT", Path.home() / "devlogs"))
 SITE_ROOT = Path(__file__).resolve().parent.parent
+CONTENT_ROOT = SITE_ROOT / "content"
 OUT = SITE_ROOT / "data" / "posts.json"
 FEED_OUT = SITE_ROOT / "feed.xml"
 SITE_URL = os.environ.get("DEVLOG_SITE_URL", "https://joey114132.github.io/devlog")
@@ -90,43 +91,60 @@ def excerpt(body: str, limit: int = 140) -> str:
     return text
 
 
-def collect_posts() -> list[dict]:
-    posts: list[dict] = []
-    if not DEVLOG_ROOT.is_dir():
-        return posts
+def post_from_raw(raw: str, post_id: str) -> dict:
+    date_folder, slug = post_id.split("/", 1)
+    meta, body = parse_frontmatter(raw)
+    date = meta.get("date", date_folder)
+    title = extract_title(body, slug)
+    scrum = extract_scrum(body)
+    return {
+        "id": post_id,
+        "date": date,
+        "title": title,
+        "slug": slug,
+        "project": meta.get("project", ""),
+        "tags": [t.strip() for t in meta.get("tags", "").strip("[]").split(",") if t.strip()],
+        "scrum": scrum,
+        "excerpt": excerpt(body),
+        "reading_minutes": reading_minutes(body),
+        "markdown": body.strip(),
+    }
 
-    for md_path in sorted(DEVLOG_ROOT.rglob("*.md")):
-        rel = md_path.relative_to(DEVLOG_ROOT)
+
+def iter_markdown_sources() -> list[tuple[Path, Path]]:
+    """Return (root, md_path) pairs from ~/devlogs and repo content/."""
+    pairs: list[tuple[Path, Path]] = []
+    for root in (DEVLOG_ROOT, CONTENT_ROOT):
+        if not root.is_dir():
+            continue
+        for md_path in sorted(root.rglob("*.md")):
+            pairs.append((root, md_path))
+    return pairs
+
+
+def collect_posts() -> list[dict]:
+    by_id: dict[str, dict] = {}
+
+    for root, md_path in iter_markdown_sources():
+        rel = md_path.relative_to(root)
         parts = rel.parts
         if len(parts) < 2:
             continue
-        date_folder, filename = parts[0], parts[-1]
+        date_folder, _filename = parts[0], parts[-1]
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_folder):
             continue
 
         slug = md_path.stem
         post_id = f"{date_folder}/{slug}"
         raw = md_path.read_text(encoding="utf-8")
-        meta, body = parse_frontmatter(raw)
-        date = meta.get("date", date_folder)
-        title = extract_title(body, slug)
+        post = post_from_raw(raw, post_id)
 
-        scrum = extract_scrum(body)
-        posts.append(
-            {
-                "id": post_id,
-                "date": date,
-                "title": title,
-                "slug": slug,
-                "project": meta.get("project", ""),
-                "tags": [t.strip() for t in meta.get("tags", "").strip("[]").split(",") if t.strip()],
-                "scrum": scrum,
-                "excerpt": excerpt(body),
-                "reading_minutes": reading_minutes(body),
-                "markdown": body.strip(),
-            }
-        )
+        # Local ~/devlogs wins over repo content/ when both exist.
+        if post_id in by_id and root == CONTENT_ROOT:
+            continue
+        by_id[post_id] = post
 
+    posts = list(by_id.values())
     posts.sort(key=lambda p: (p["date"], p["id"]), reverse=True)
     return posts
 

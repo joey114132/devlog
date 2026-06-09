@@ -1,6 +1,7 @@
 (function () {
-  const API_BASE = "http://127.0.0.1:8781";
+  const LOCAL_API = "http://127.0.0.1:8781";
   const { composeMarkdown, parseScrum } = window.DevlogScrum;
+  const gh = () => window.DevlogGitHub;
 
   const els = {
     status: () => document.getElementById("editor-status"),
@@ -17,9 +18,15 @@
     saveBtn: () => document.getElementById("btn-save"),
     appendBtn: () => document.getElementById("btn-append"),
     downloadBtn: () => document.getElementById("btn-download"),
+    githubPanel: () => document.getElementById("github-auth"),
+    githubToken: () => document.getElementById("github-token"),
+    githubConnect: () => document.getElementById("btn-github-connect"),
+    githubDisconnect: () => document.getElementById("btn-github-disconnect"),
   };
 
-  let apiOnline = false;
+  let localApiOnline = false;
+  let githubOnline = false;
+  let saveMode = "none";
   let editingId = null;
 
   function todayIso() {
@@ -61,25 +68,69 @@
     node.dataset.kind = kind;
   }
 
-  async function probeApi() {
-    try {
-      const res = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(1200) });
-      apiOnline = res.ok;
-    } catch {
-      apiOnline = false;
-    }
+  function updateSaveButtons() {
+    const canSave = localApiOnline || githubOnline;
+    saveMode = localApiOnline ? "local" : githubOnline ? "github" : "none";
 
     const save = els.saveBtn();
     const append = els.appendBtn();
-    if (save) save.disabled = !apiOnline;
-    if (append) append.disabled = !apiOnline;
+    if (save) save.disabled = !canSave;
+    if (append) append.disabled = !canSave;
 
-    setStatus(
-      apiOnline
-        ? "로컬 저장 서버 연결됨 — 저장하면 ~/devlogs에 쓰고 빌드·GitHub 동기화합니다."
-        : "저장 서버 오프라인 — scripts/serve-dev.sh 실행 후 저장하거나, 다운로드로 md를 받으세요.",
-      apiOnline ? "ok" : "warn"
-    );
+    if (localApiOnline) {
+      setStatus(
+        "로컬 저장 서버 연결됨 — 저장하면 ~/devlogs에 쓰고 빌드·GitHub 동기화합니다.",
+        "ok"
+      );
+      return;
+    }
+
+    if (githubOnline) {
+      setStatus(
+        "GitHub 연결됨 — 저장하면 joey114132/devlog에 바로 반영되고 사이트가 갱신됩니다.",
+        "ok"
+      );
+      return;
+    }
+
+    const onLive =
+      location.hostname.endsWith("github.io") || location.protocol === "https:";
+    if (onLive) {
+      setStatus(
+        "GitHub 토큰을 연결하면 이 사이트에서 바로 저장·게시할 수 있습니다. (아래 연결)",
+        "warn"
+      );
+    } else {
+      setStatus(
+        "저장 서버 오프라인 — scripts/serve-dev.sh 실행하거나 GitHub 토큰을 연결하세요.",
+        "warn"
+      );
+    }
+  }
+
+  async function probeLocalApi() {
+    try {
+      const res = await fetch(`${LOCAL_API}/health`, { signal: AbortSignal.timeout(1200) });
+      localApiOnline = res.ok;
+    } catch {
+      localApiOnline = false;
+    }
+  }
+
+  async function probeGitHub() {
+    if (!gh()) {
+      githubOnline = false;
+      return;
+    }
+    const result = await gh().probe();
+    githubOnline = result.ok;
+  }
+
+  async function probeBackends() {
+    await probeLocalApi();
+    if (!localApiOnline) await probeGitHub();
+    else githubOnline = false;
+    updateSaveButtons();
   }
 
   function updatePreview() {
@@ -111,12 +162,24 @@
     editingId = id;
     const [date, slug] = id.split("/");
 
-    if (apiOnline) {
+    if (localApiOnline) {
       try {
-        const res = await fetch(`${API_BASE}/api/raw/${encodeURIComponent(id)}`);
+        const res = await fetch(`${LOCAL_API}/api/raw/${encodeURIComponent(id)}`);
         if (res.ok) {
           const data = await res.json();
           fillFromRaw(data.content, date, slug);
+          return;
+        }
+      } catch {
+        /* fall through */
+      }
+    }
+
+    if (githubOnline && gh()) {
+      try {
+        const raw = await gh().loadRawMarkdown(id);
+        if (raw) {
+          fillFromRaw(raw, date, slug);
           return;
         }
       } catch {
@@ -142,7 +205,7 @@
 
     if (fmMatch) {
       body = raw.slice(fmMatch[0].length);
-      fmMatch[1].splitlines().forEach((line) => {
+      fmMatch[1].split("\n").forEach((line) => {
         if (!line.includes(":")) return;
         const [k, v] = line.split(":", 2);
         const key = k.trim();
@@ -199,14 +262,13 @@
     updatePreview();
   }
 
-  async function saveToApi(mode) {
-    if (!apiOnline) return;
+  async function saveLocal(mode) {
     const id = postIdFromForm();
     const content = composeMarkdown(getFormState());
 
     setStatus(mode === "append" ? "이어쓰기 저장 중…" : "저장 중…", "info");
     try {
-      const res = await fetch(`${API_BASE}/api/save`, {
+      const res = await fetch(`${LOCAL_API}/api/save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, content, mode, sync: true }),
@@ -227,6 +289,34 @@
     }
   }
 
+  async function saveGitHub(mode) {
+    const id = postIdFromForm();
+    const content = composeMarkdown(getFormState());
+
+    setStatus(mode === "append" ? "GitHub에 이어쓰기 중…" : "GitHub에 저장 중…", "info");
+    try {
+      await gh().savePost({ id, content, mode });
+      setStatus("저장·게시 완료 — GitHub Pages가 잠시 후 갱신됩니다.", "ok");
+      editingId = id;
+      window.setTimeout(() => {
+        window.location.href = `post.html?id=${encodeURIComponent(id)}`;
+      }, 1200);
+    } catch (err) {
+      setStatus(`GitHub 저장 실패: ${err.message}`, "error");
+      if (String(err.message).includes("Bad credentials")) {
+        gh()?.clearToken();
+        githubOnline = false;
+        updateSaveButtons();
+      }
+    }
+  }
+
+  async function save(mode) {
+    if (saveMode === "local") return saveLocal(mode);
+    if (saveMode === "github") return saveGitHub(mode);
+    setStatus("저장 방법이 없습니다. 로컬 서버를 켜거나 GitHub를 연결하세요.", "warn");
+  }
+
   function downloadMd() {
     const id = postIdFromForm();
     const [, slug] = id.split("/");
@@ -237,12 +327,53 @@
     a.download = `${slug}.md`;
     a.click();
     URL.revokeObjectURL(a.href);
-    setStatus("md 파일을 다운로드했어요. ~/devlogs/날짜/ 에 넣고 scripts/sync-github.sh 를 실행하세요.", "warn");
+    setStatus("md 파일을 다운로드했어요.", "warn");
+  }
+
+  function bindGitHubAuth() {
+    const panel = els.githubPanel();
+    if (!panel || !gh()) return;
+
+    const saved = gh().getToken();
+    if (saved && els.githubToken()) {
+      els.githubToken().value = saved;
+      panel.classList.add("is-connected");
+    }
+
+    els.githubConnect()?.addEventListener("click", async () => {
+      const token = els.githubToken()?.value.trim();
+      if (!token) {
+        setStatus("GitHub 토큰을 입력하세요.", "warn");
+        return;
+      }
+      gh().setToken(token);
+      await probeGitHub();
+      if (githubOnline) {
+        panel.classList.add("is-connected");
+        setStatus("GitHub 연결됨 — 이제 저장할 수 있습니다.", "ok");
+        updateSaveButtons();
+        if (editingId) await loadForEdit(editingId);
+      } else {
+        gh().clearToken();
+        panel.classList.remove("is-connected");
+        setStatus("토큰이 유효하지 않거나 repo 권한이 없습니다.", "error");
+        updateSaveButtons();
+      }
+    });
+
+    els.githubDisconnect()?.addEventListener("click", async () => {
+      gh().clearToken();
+      if (els.githubToken()) els.githubToken().value = "";
+      panel.classList.remove("is-connected");
+      githubOnline = false;
+      await probeBackends();
+    });
   }
 
   async function init() {
     bindLivePreview();
-    await probeApi();
+    bindGitHubAuth();
+    await probeBackends();
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
@@ -253,11 +384,11 @@
       initNew();
     }
 
-    els.saveBtn()?.addEventListener("click", () => saveToApi("overwrite"));
-    els.appendBtn()?.addEventListener("click", () => saveToApi("append"));
+    els.saveBtn()?.addEventListener("click", () => save("overwrite"));
+    els.appendBtn()?.addEventListener("click", () => save("append"));
     els.downloadBtn()?.addEventListener("click", downloadMd);
 
-    window.setInterval(probeApi, 15000);
+    window.setInterval(probeBackends, 20000);
   }
 
   if (document.readyState === "loading") {

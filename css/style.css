@@ -1170,6 +1170,74 @@ html[data-theme="dark"] .hljs {
   color: #b91c1c;
 }
 
+.github-auth {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-soft) 25%, var(--bg-card));
+}
+
+.github-auth.is-connected {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+
+.github-auth-lead {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.github-auth-lead a {
+  color: var(--accent);
+}
+
+.github-auth-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.github-auth-field {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.github-auth-input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 0.82rem var(--font-mono);
+}
+
+.github-auth-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+.btn-ghost {
+  padding: 0.45rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--line) 50%, transparent);
+}
+
 .editor-tabs {
   display: flex;
   gap: 0.5rem;

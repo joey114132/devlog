@@ -44,6 +44,35 @@
         <p id="editor-status" class="editor-status" data-kind="info">연결 확인 중…</p>
       </header>
 
+      <section id="github-auth" class="github-auth" aria-label="GitHub 저장 연결">
+        <p class="github-auth-lead">
+          GitHub Pages에서 저장하려면 <strong>repo 쓰기 권한</strong> 토큰이 필요합니다.
+          <a
+            href="https://github.com/settings/tokens?type=beta"
+            target="_blank"
+            rel="noopener noreferrer"
+            >fine-grained PAT 만들기</a
+          >
+          → Repository: <code>devlog</code>, Contents: Read and write
+        </p>
+        <div class="github-auth-row">
+          <label class="github-auth-field">
+            <span class="visually-hidden">GitHub token</span>
+            <input
+              type="password"
+              id="github-token"
+              class="github-auth-input"
+              placeholder="github_pat_… 또는 ghp_…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </label>
+          <button type="button" id="btn-github-connect" class="btn-secondary">연결</button>
+          <button type="button" id="btn-github-disconnect" class="btn-ghost">연결 해제</button>
+        </div>
+        <p class="github-auth-note">토큰은 이 브라우저에만 저장됩니다. 공용 PC에서는 연결 해제하세요.</p>
+      </section>
+
       <div class="editor-tabs" role="tablist">
         <button type="button" class="editor-tab is-active" data-tab="write">작성</button>
         <button type="button" class="editor-tab" data-tab="preview">미리보기</button>
@@ -118,11 +147,13 @@
     <footer class="site-footer">
       <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
       <p class="footer-meta">
-        로컬 저장: <code>scripts/serve-dev.sh</code>
+        로컬: <code>scripts/serve-dev.sh</code> · 라이브: GitHub 토큰 연결 후 저장
       </p>
     </footer>
 
     <script src="js/scrum.js" defer></script>
+    <script src="js/post-build.js" defer></script>
+    <script src="js/github-save.js" defer></script>
     <script src="js/editor.js" defer></script>
   </body>
 </html>
