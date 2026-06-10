@@ -51,3 +51,15 @@ Pages에서 PAT 없이 열었을 때 저장 버튼이 비활성이라 막혔던 
 터미널 로그 보면 devlog-site `8780` static serve랑 `serve-dev.sh`(8781)도 여러 세션에서 돌았고, portfolio `8766` serve, daily-vision-lab `2026-06-10-margin-notes` dev 서버(`5174`)도 있음. Terminator로 portfolio 테스트 띄운 명령은 터미널에만 보이고 GUI 상태는 여기서는 못 봤음.
 
 `~/.zsh_history`는 EXTENDED_HISTORY 타임스탬프가 없어서 오늘 필터는 못 함. `gather-context.sh`는 아직 없어서 스크립트는 안 만들고, 다음에 필요하면 터미널 메타·git log·find mtime 묶는 짧은 셸 스크립트로 가면 될 듯.
+
+---
+
+# [TEST] gather-context → append → sync 파이프라인 돌려봄
+
+저녁 늦게 Cursor에서 devlog 파이프라인 **테스트 런** 함. `gather-context.sh` 돌리니까 `_context.md`가 20:22쯤에 갱신됐고, 터미널 로그·zsh 히스토리·portfolio/devlog-site/daily-vision-lab git 상태가 한 파일에 묶여 나옴. 예전엔 “스크립트 없어서 수동으로 짚자”고 했는데 이제는 실제로 있음 — 아직 devlog-site 쪽엔 untracked로만 있음.
+
+컨텍스트 훑어보니 오늘 그림은 대충 이렇게 정리됨. `physical-ai-bootcamp-intro/self-intro-web`은 8791에서 미리보기 띄워 둔 채로 index/style unstaged, 게임 그리드 2행 재배치 작업 이어가는 중. `portfolio`는 hero 카피·i18n·app.js 손댄 게 unstaged고 presentation 폴더가 새로 생김. `daily-vision-lab`은 `2026-06-10-margin-notes`가 latest day로 5174에 올라가 있었고, 다음 날 `breath-cadence`도 잠깐 돌아봤다가 kill된 흔적 있음.
+
+devlog-site는 PAT 빼고 localStorage 초안 모드로 바꾸는 에디터 수정이 워킹트리에만 있고, 오늘 Pages에 실제로 올라간 건 sync로 밀린 빌드 커밋들뿐. 그래서 이번 테스트도 브라우저 저장 말고 `~/devlogs/2026-06-10/daily.md`에 **이 섹션 append**하고 `sync-github.sh`로 GitHub에 밀 예정.
+
+요약하면: gather가 터미널·git 맥락을 잘 모아주고, 다이어리는 구어체로 합쳐 쓰고, sync가 publish 담당 — 이 세 단계가 end-to-end로 도는지 확인하는 게 오늘 TEST의 목적임.
