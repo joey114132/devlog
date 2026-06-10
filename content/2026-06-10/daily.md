@@ -25,3 +25,11 @@ git 돌려봤는데 portfolio랑 devlog-site 쪽은 오늘 커밋 없음. devlog
 `portfolio`는 오늘 커밋 없고, `.cursor/agents/`랑 `task-completion.mdc`만 untracked. `devlog-site`도 코드 커밋은 없고 `edit.html`/CSS/JS는 어제(6/9) 수정분이 unstaged로 남아 있음. 오늘 devlog-site에 올라간 건 `sync-github.sh`로 밀린 `e4ad017` (오늘 다이어리 첫 버전)뿐.
 
 저녁엔 Cursor에서 `/devlog` 두 번 치고, 첫 기록이 부정확하다고 해서 지금 이 append 쓰는 중. devlog-site `editor-server.py`는 어제부터 터미널에 계속 떠 있음 — 오늘은 안 건드렸음.
+
+---
+
+# 브라우저 저장 막힘 → 스크립트로 밀기
+
+devlog-site 에디터에서 저장 눌렀는데 버튼이 비활성이라 막혔음. GitHub Pages에서 PAT 없이 열었고, 로컬 `8781` 저장 API도 지금은 안 떠 있음 (`serve-dev.sh` 안 켠 상태). 그래서 Cursor에서 `~/devlogs/2026-06-10/daily.md` 확인하고 `sync-github.sh`로 GitHub에 올림.
+
+브라우저에만 있고 아직 안 쓴 초안은 localStorage에 안 남기는 구조라, 에디터에 타이핑만 해둔 게 있으면 그건 못 가져옴 — md 다운로드나 PAT 연결 후 다시 저장해야 함.
