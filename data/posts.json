@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-09T17:19:16+09:00",
+  "generated_at": "2026-06-10T18:54:16+09:00",
   "source": "/home/joey/devlogs",
   "site_url": "https://joey114132.github.io/devlog",
-  "count": 10,
+  "count": 11,
   "tags": [
     "agent-harness",
     "cnn",
@@ -25,6 +25,22 @@
     "yolo"
   ],
   "posts": [
+    {
+      "id": "2026-06-10/daily",
+      "date": "2026-06-10",
+      "title": "오늘은 devlog만 돌림",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "Cursor에서 `/devlog` 치고 오늘 날짜 다이어리 쓰라고 해서 지금 이 파일 만드는 중. 이 세션에서는 딱 이거만 했음. git 돌려봤는데 portfolio랑 devlog-site 쪽은 오늘 커밋 없음. devlog-site는 어제 손댄 `…",
+      "reading_minutes": 1,
+      "markdown": "# 오늘은 devlog만 돌림\n\nCursor에서 `/devlog` 치고 오늘 날짜 다이어리 쓰라고 해서 지금 이 파일 만드는 중. 이 세션에서는 딱 이거만 했음.\n\ngit 돌려봤는데 portfolio랑 devlog-site 쪽은 오늘 커밋 없음. devlog-site는 어제 손댄 `edit.html`이랑 CSS/JS가 아직 unstaged로 남아 있고, portfolio는 `.cursor/agents/`랑 `task-completion.mdc`가 untracked.\n\n파일 mtime 보면 오늘 실제로 건드린 건 `physical-ai-bootcamp-intro/self-intro-web`의 `index.html`, `main.js`, `style.css` 정도. 뭐 바꿨는지 diff는 안 봤음.\n\n어제 devlog-site 에디터 서버는 터미널에 아직 떠 있는 것 같긴 한데 오늘은 안 건드림. 저장 끝나면 `sync-github.sh`로 GitHub Pages에 올릴 예정."
+    },
     {
       "id": "2026-06-09/yesterday-devlog-followup",
       "date": "2026-06-09",
