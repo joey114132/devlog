@@ -1,6 +1,19 @@
 .DS_Store
 *.pyc
 __pycache__/
+
+# Local secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Agent-only evidence — never publish to GitHub Pages
+**/_context.md
+content/**/_*.md
+
+# Local Playwright verify artifacts
+.verify-screenshots/

@@ -6,12 +6,14 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 
 DEVLOG_ROOT = Path(os.environ.get("DEVLOG_ROOT", Path.home() / "devlogs"))
 SITE_ROOT = Path(__file__).resolve().parent.parent
 CONTENT_ROOT = SITE_ROOT / "content"
+SCRIPTS_DIR = SITE_ROOT / "scripts"
 OUT = SITE_ROOT / "data" / "posts.json"
 FEED_OUT = SITE_ROOT / "feed.xml"
 SITE_URL = os.environ.get("DEVLOG_SITE_URL", "https://joey114132.github.io/devlog")
@@ -206,6 +208,22 @@ def escape_xml(value: str) -> str:
 
 def main() -> None:
     posts = collect_posts()
+
+    sys_path = SCRIPTS_DIR
+    if str(sys_path) not in sys.path:
+        sys.path.insert(0, str(sys_path))
+    from secrets import find_secrets  # ponytail: build와 gather가 같은 스캔 규칙 공유
+
+    secret_hits: list[str] = []
+    for post in posts:
+        secret_hits.extend(find_secrets(post.get("markdown", ""), path=post["id"]))
+        secret_hits.extend(find_secrets(post.get("excerpt", ""), path=f"{post['id']}:excerpt"))
+    if secret_hits:
+        print("build.py: refused to write posts.json — possible secrets:", file=sys.stderr)
+        for hit in secret_hits:
+            print(f"  - {hit}", file=sys.stderr)
+        raise SystemExit(1)
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),

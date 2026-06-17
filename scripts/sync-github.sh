@@ -24,6 +24,18 @@ fi
 
 python3 scripts/build.py
 
+# publish 전 posts.json·공개 markdown 스캔
+publish_paths=(data/posts.json)
+while IFS= read -r -d '' md; do
+  base="$(basename "$md")"
+  [[ "$base" == _* ]] && continue
+  publish_paths+=("$md")
+done < <(find content -type f -name '*.md' -print0 2>/dev/null || true)
+if ! python3 scripts/secrets.py check "${publish_paths[@]}"; then
+  echo "sync-github: secret scan failed — commit/push aborted" >&2
+  exit 1
+fi
+
 posts_unchanged=0
 if python3 - <<'PY'
 import json

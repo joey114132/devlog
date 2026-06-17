@@ -1,0 +1,15 @@
+# Local / CI secret scan for the public devlog repo.
+title = "devlog gitleaks"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "understand-dashboard-token"
+description = "Ephemeral Understand-Anything dashboard token"
+regex = '''sam3-dashboard-\d{6,}'''
+
+[[rules]]
+id = "devlog-context-path"
+description = "Agent context file path in published content"
+regex = '''content/\d{4}-\d{2}-\d{2}/_context\.md'''

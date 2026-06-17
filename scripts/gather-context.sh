@@ -17,16 +17,11 @@ KNOWN_REPOS=(
   "$HOME/daily-vision-lab"
 )
 
-# 비밀값 패턴 마스킹
+SCRIPT_DIR="${0:A:h}"
+
+# 비밀값 패턴 마스킹 (scripts/secrets.py와 동일 규칙)
 redact() {
-  sed -E \
-    -e 's/ghp_[A-Za-z0-9_]+/[REDACTED]/g' \
-    -e 's/github_pat_[A-Za-z0-9_]+/[REDACTED]/g' \
-    -e 's/GHTOKEN[A-Za-z0-9_]*/GHTOKEN[REDACTED]/g' \
-    -e 's/API_KEY=[^[:space:]'\'']+/API_KEY=[REDACTED]/g' \
-    -e 's/UNDERSTAND_ACCESS_TOKEN=[^[:space:]'\'']+/UNDERSTAND_ACCESS_TOKEN=[REDACTED]/g' \
-    -e 's/sam3-dashboard-[0-9]+/sam3-dashboard-[REDACTED]/g' \
-    -e 's/\?token=[^[:space:]"'\'']+/\?token=[REDACTED]/g'
+  python3 "$SCRIPT_DIR/secrets.py" redact
 }
 
 # 터미널 로그에서 cwd별 명령 추출
