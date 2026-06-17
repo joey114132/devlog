@@ -213,6 +213,37 @@ a:hover {
   line-height: 1.35;
 }
 
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.site-nav__link:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--bg-card) 80%, var(--line));
+}
+
+.site-nav__link.is-active {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  background: color-mix(in srgb, var(--accent-soft) 45%, var(--bg-card));
+}
+
 .app-actions {
   display: flex;
   align-items: center;
@@ -1872,4 +1903,135 @@ html[data-theme="dark"] .hljs,
 .btn-secondary:hover:not(:disabled) {
   border-color: var(--accent);
   transform: translateY(-1px);
+}
+
+/* 공부 정리 탭 */
+.page--studies .index-intro-lead {
+  margin: 0 0 1.25rem;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.study-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.study-intro {
+  margin: 0.75rem 0 0;
+  color: var(--ink-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: 42rem;
+}
+
+.study-body {
+  margin-top: 1.75rem;
+}
+
+.study-section + .study-section {
+  margin-top: 2.5rem;
+}
+
+.study-section h2 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  line-height: 1.35;
+}
+
+.study-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+}
+
+.study-table {
+  width: 100%;
+  min-width: 44rem;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+}
+
+.study-table th,
+.study-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.study-table thead th {
+  background: color-mix(in srgb, var(--accent-soft) 35%, var(--bg-card));
+  color: var(--scrum-title-fg);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.study-table tbody tr:last-child th,
+.study-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.study-table tbody th {
+  width: 12rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--line) 25%, var(--bg-card));
+}
+
+@media (max-width: 720px) {
+  .site-nav {
+    width: 100%;
+  }
+
+  .study-table {
+    min-width: 0;
+  }
+
+  .study-table thead {
+    display: none;
+  }
+
+  .study-table tbody tr {
+    display: block;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .study-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .study-table tbody th,
+  .study-table tbody td {
+    display: block;
+    width: auto;
+    border: none;
+    padding: 0.35rem 0.85rem;
+    background: transparent;
+  }
+
+  .study-table tbody th {
+    padding-top: 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  .study-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--ink-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
 }

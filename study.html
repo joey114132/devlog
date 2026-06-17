@@ -3,19 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Joey Devlog</title>
-    <meta
-      name="description"
-      content="Joey의 개발 다이어리 — 개발 세션, 하네스, 프로젝트 작업 기록"
-    />
-    <meta property="og:title" content="Joey Devlog" />
-    <meta
-      property="og:description"
-      content="Joey의 개발 다이어리 — 개발 세션, 하네스, 프로젝트 작업 기록"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://joey114132.github.io/devlog/" />
-    <meta name="twitter:card" content="summary" />
+    <title>공부 정리 · Joey Devlog</title>
+    <meta name="description" content="Joey의 공부 정리 노트" />
+    <meta property="og:title" content="공부 정리 · Joey Devlog" />
+    <meta property="og:type" content="article" />
     <link rel="alternate" type="application/rss+xml" title="Joey Devlog RSS" href="feed.xml" />
     <script>
       (function () {
@@ -44,39 +35,35 @@
       </div>
 
       <header class="app-header">
-      <div class="app-header__inner">
-        <div class="header-start">
-          <div class="brand">
-            <h1><a href="index.html">Joey Devlog</a></h1>
-            <p class="brand-tagline">개발 다이어리 — 말하듯 남긴 작업 기록</p>
+        <div class="app-header__inner">
+          <div class="header-start">
+            <a class="header-btn header-btn--back" href="studies.html">← 공부 정리</a>
+            <div class="brand">
+              <h1><a href="index.html">Joey Devlog</a></h1>
+            </div>
+            <nav class="site-nav" aria-label="주요 메뉴">
+              <a class="site-nav__link" href="index.html">다이어리</a>
+              <a class="site-nav__link is-active" href="studies.html" aria-current="page">공부 정리</a>
+            </nav>
           </div>
-          <nav class="site-nav" aria-label="주요 메뉴">
-            <a class="site-nav__link is-active" href="index.html" aria-current="page">다이어리</a>
-            <a class="site-nav__link" href="studies.html">공부 정리</a>
-          </nav>
+          <div class="app-actions">
+            <button
+              type="button"
+              class="header-btn header-btn--menu menu-fab"
+              id="menu-fab"
+              aria-label="설정 메뉴 열기"
+              aria-expanded="false"
+              aria-controls="prefs-panel"
+            >
+              <span class="menu-fab-bars" aria-hidden="true">
+                <span class="menu-fab-bar"></span>
+                <span class="menu-fab-bar"></span>
+                <span class="menu-fab-bar"></span>
+              </span>
+              <span class="menu-fab-label">설정</span>
+            </button>
+          </div>
         </div>
-        <div class="app-actions">
-          <a class="header-btn header-btn--write" href="edit.html">
-            <span aria-hidden="true">✎</span>
-            <span>글쓰기</span>
-          </a>
-          <button
-            type="button"
-            class="header-btn header-btn--menu menu-fab"
-            id="menu-fab"
-            aria-label="설정 메뉴 열기"
-            aria-expanded="false"
-            aria-controls="prefs-panel"
-          >
-            <span class="menu-fab-bars" aria-hidden="true">
-              <span class="menu-fab-bar"></span>
-              <span class="menu-fab-bar"></span>
-              <span class="menu-fab-bar"></span>
-            </span>
-            <span class="menu-fab-label">설정</span>
-          </button>
-        </div>
-      </div>
       </header>
     </div>
 
@@ -114,33 +101,11 @@
       </form>
     </aside>
 
-    <main class="page page--index">
-      <div class="page__inner index-shell">
-        <div class="index-main">
-          <section class="index-intro" aria-label="소개">
-            <div id="site-hero" class="site-hero"></div>
-          </section>
-
-          <div class="index-tools">
-            <label class="search-field">
-              <span class="visually-hidden">검색</span>
-              <input
-                type="search"
-                id="post-search"
-                placeholder="제목, 태그, 프로젝트 검색…"
-                autocomplete="off"
-              />
-            </label>
-            <div id="tag-filters" class="tag-filters" role="group" aria-label="태그 필터"></div>
-            <p id="result-count" class="result-count" aria-live="polite"></p>
-          </div>
-
-          <div id="post-list" class="timeline" aria-live="polite">
-            <p class="empty">불러오는 중…</p>
-          </div>
-        </div>
-
-        <aside id="today-scrum" class="today-scrum index-scrum-rail" aria-label="오늘 스크럼" hidden></aside>
+    <main class="page page--study">
+      <div class="page__inner">
+        <article id="study-article" class="article-layout">
+          <p class="empty">불러오는 중…</p>
+        </article>
       </div>
     </main>
 
@@ -154,14 +119,17 @@
       <p class="footer-meta">
         <a href="studies.html">공부 정리</a>
         · <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
-        · <a href="feed.xml">RSS</a>
-        · 소스 <code>~/devlogs</code>
       </p>
     </footer>
 
     <script src="js/prefs.js" defer></script>
-    <script src="js/scrum.js" defer></script>
     <script src="js/features.js" defer></script>
-    <script src="js/app.js" defer></script>
+    <script src="js/studies.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        window.DevlogFeatures?.initReadingProgress();
+        window.DevlogFeatures?.initBackToTop();
+      });
+    </script>
   </body>
 </html>

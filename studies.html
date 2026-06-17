@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Joey Devlog</title>
-    <meta name="description" content="Joey의 개발 다이어리" />
-    <meta property="og:title" content="Joey Devlog" />
-    <meta property="og:description" content="Joey의 개발 다이어리" />
-    <meta property="og:type" content="article" />
-    <meta name="twitter:card" content="summary" />
+    <title>공부 정리 · Joey Devlog</title>
+    <meta
+      name="description"
+      content="Joey의 공부 정리 — ROS, 로봇, 개발 개념을 표와 비유로 정리한 노트"
+    />
+    <meta property="og:title" content="공부 정리 · Joey Devlog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://joey114132.github.io/devlog/studies.html" />
     <link rel="alternate" type="application/rss+xml" title="Joey Devlog RSS" href="feed.xml" />
     <script>
       (function () {
@@ -26,57 +28,46 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      id="hljs-theme"
-      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css"
-    />
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
 
     <div id="site-top" class="site-top">
-      <div id="reading-progress-wrap" class="reading-progress-wrap" aria-hidden="true">
-        <div id="reading-progress" class="reading-progress"></div>
-      </div>
-
       <header class="app-header">
-      <div class="app-header__inner">
-        <div class="header-start">
-          <a class="header-btn header-btn--back" href="index.html">← 목록</a>
-          <div class="brand">
-            <h1><a href="index.html">Joey Devlog</a></h1>
+        <div class="app-header__inner">
+          <div class="header-start">
+            <div class="brand">
+              <h1><a href="index.html">Joey Devlog</a></h1>
+              <p class="brand-tagline">공부 정리 — 배운 걸 표로 남기기</p>
+            </div>
+            <nav class="site-nav" aria-label="주요 메뉴">
+              <a class="site-nav__link" href="index.html">다이어리</a>
+              <a class="site-nav__link is-active" href="studies.html" aria-current="page">공부 정리</a>
+            </nav>
           </div>
-          <nav class="site-nav" aria-label="주요 메뉴">
-            <a class="site-nav__link" href="index.html">다이어리</a>
-            <a class="site-nav__link" href="studies.html">공부 정리</a>
-          </nav>
+          <div class="app-actions">
+            <a class="header-btn header-btn--write" href="edit.html">
+              <span aria-hidden="true">✎</span>
+              <span>글쓰기</span>
+            </a>
+            <button
+              type="button"
+              class="header-btn header-btn--menu menu-fab"
+              id="menu-fab"
+              aria-label="설정 메뉴 열기"
+              aria-expanded="false"
+              aria-controls="prefs-panel"
+            >
+              <span class="menu-fab-bars" aria-hidden="true">
+                <span class="menu-fab-bar"></span>
+                <span class="menu-fab-bar"></span>
+                <span class="menu-fab-bar"></span>
+              </span>
+              <span class="menu-fab-label">설정</span>
+            </button>
+          </div>
         </div>
-        <div class="app-actions">
-          <a class="header-btn header-btn--write" href="edit.html">
-            <span aria-hidden="true">✎</span>
-            <span>글쓰기</span>
-          </a>
-          <button
-            type="button"
-            class="header-btn header-btn--menu menu-fab"
-            id="menu-fab"
-            aria-label="설정 메뉴 열기"
-            aria-expanded="false"
-            aria-controls="prefs-panel"
-          >
-            <span class="menu-fab-bars" aria-hidden="true">
-              <span class="menu-fab-bar"></span>
-              <span class="menu-fab-bar"></span>
-              <span class="menu-fab-bar"></span>
-            </span>
-            <span class="menu-fab-label">설정</span>
-          </button>
-        </div>
-      </div>
       </header>
     </div>
 
@@ -114,31 +105,30 @@
       </form>
     </aside>
 
-    <main class="page page--article">
-      <div class="page__inner layout-article">
-        <article id="article" class="article" aria-live="polite">
+    <main class="page page--studies">
+      <div class="page__inner">
+        <section class="index-intro" aria-label="공부 정리 소개">
+          <p class="index-intro-lead">
+            다이어리와 별도로, 공부하면서 정리한 개념·용어를 표로 모아 둡니다. 학교·일상 비유와
+            로봇에서의 역할을 나란히 둡니다.
+          </p>
+        </section>
+        <div id="study-list" class="timeline" aria-live="polite">
           <p class="empty">불러오는 중…</p>
-        </article>
+        </div>
       </div>
     </main>
-
-    <button type="button" id="back-to-top" class="back-to-top" aria-label="맨 위로">
-      <span class="back-to-top__icon" aria-hidden="true">↑</span>
-      <span class="back-to-top__label">맨 위로</span>
-    </button>
 
     <footer class="site-footer">
       <p class="copyright">© 2026 Joey Lee (이정우). All rights reserved.</p>
       <p class="footer-meta">
-        <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
+        <a href="index.html">다이어리</a>
+        · <a href="https://github.com/joey114132/devlog" rel="noopener noreferrer">GitHub</a>
         · <a href="feed.xml">RSS</a>
-        · 소스 <code>~/devlogs</code>
       </p>
     </footer>
 
     <script src="js/prefs.js" defer></script>
-    <script src="js/scrum.js" defer></script>
-    <script src="js/features.js" defer></script>
-    <script src="js/app.js" defer></script>
+    <script src="js/studies.js" defer></script>
   </body>
 </html>
