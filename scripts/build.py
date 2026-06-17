@@ -135,6 +135,9 @@ def collect_posts() -> list[dict]:
             continue
 
         slug = md_path.stem
+        # Agent-only context files (terminal dumps) — never publish.
+        if slug.startswith("_"):
+            continue
         post_id = f"{date_folder}/{slug}"
         raw = md_path.read_text(encoding="utf-8")
         post = post_from_raw(raw, post_id)

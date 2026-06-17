@@ -12,6 +12,9 @@ cd "$ROOT"
 if [[ -d "$DEVLOG_ROOT" ]]; then
   mkdir -p "$CONTENT_DIR"
   while IFS= read -r -d '' md; do
+    base="$(basename "$md")"
+    # _context.md 등 내부 증거 파일은 GitHub에 올리지 않음
+    [[ "$base" == _* ]] && continue
     rel="${md#"$DEVLOG_ROOT"/}"
     dest="$CONTENT_DIR/$rel"
     mkdir -p "$(dirname "$dest")"

@@ -5,7 +5,21 @@
     <link>https://joey114132.github.io/devlog/</link>
     <description>Joey의 개발 다이어리 — 개발 세션, 하네스, 프로젝트 작업 기록</description>
     <language>ko</language>
-    <lastBuildDate>Tue, 09 Jun 2026 14:28:42 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jun 2026 10:14:28 +0900</lastBuildDate>
+    <item>
+      <title>jetcobot_ros2 훑고 smart_farm 폴더 깔았음</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-17/daily</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-17/daily</guid>
+      <pubDate>2026-06-17T09:00:00+09:00</pubDate>
+      <description>`jetcobot_ros2` 레포 구조부터 뜯어봤다. 예전 BOLT 과정 산출물이라 MoveIt + pymycobot 브릿지 패턴은 괜찮은데 arm STL 메쉬가 빠져 있고, `bringup_all`이 레포 밖 패키지(`jetcobot_moveit_…</description>
+    </item>
+    <item>
+      <title>오늘은 devlog만 돌림</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-10/daily</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-10/daily</guid>
+      <pubDate>2026-06-10T09:00:00+09:00</pubDate>
+      <description>Cursor에서 `/devlog` 치고 오늘 날짜 다이어리 쓰라고 해서 지금 이 파일 만드는 중. 이 세션에서는 딱 이거만 했음. git 돌려봤는데 portfolio랑 devlog-site 쪽은 오늘 커밋 없음. devlog-site는 어제 손댄 `…</description>
+    </item>
     <item>
       <title>어제 devlog 쓰고 나서 정리</title>
       <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/yesterday-devlog-followup</link>
@@ -14,11 +28,39 @@
       <description>어제 로컬에 devlog 스킬 세 개 붙였음. harness 뭐 쓰는지 보고, refactor 스킬 어디 있는지 찾아주고, 한국어로 md나 Prismic에 남기는 흐름 만들라고 해서 `devlog-ko`, `devlog-ko-markdown`, `d…</description>
     </item>
     <item>
+      <title>pingdergarten 덱 — Vercel을 쓴 이유 (상세)</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/why-vercel-pingdergarten-deck</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/why-vercel-pingdergarten-deck</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- devlog 에디터 본문 라이브 미리보기·미디어 삭제 (Vercel 언급은 editor 글에서 제거) - 4번 프로젝트(pingdergarten) 덱이 **왜 Vercel**인지 repo 근거로 정리 - 라이브 덱: https://preso-sl…</description>
+    </item>
+    <item>
+      <title>ROS 2 패키지 직접 만드는 법 (내 기준)</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/ros2-package-howto</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/ros2-package-howto</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- devlog 에디터 writing toolbox (H2/H3, bold, list, link, table…) - ROS 2 패키지 직접 만드는 방법 정리 (내 repo 기준) - `ros2 run …` **Tab 자동완성** 쓰는 법 정리 - 예…</description>
+    </item>
+    <item>
       <title>Prismic CDN 미디어 devlog에 붙임</title>
       <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/prismic-media-devlog</link>
       <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/prismic-media-devlog</guid>
       <pubDate>2026-06-09T09:00:00+09:00</pubDate>
       <description>- index 페이지 스크럼을 오른쪽 사이드 레일로 옮기고 타임라인은 왼쪽 컬럼에 고정 - sticky 헤더·progress·맨 위로 버튼·스크럼 테마 색 마무리 - devlog 본문에 Prismic CDN 이미지·GIF·영상 붙이는 렌더링 추가 -…</description>
+    </item>
+    <item>
+      <title>ncnn vs CNN — 이름부터 분리하기</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/ncnn-vs-cnn</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/ncnn-vs-cnn</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- ROS 2 howto에 Tab 자동완성 §4.5 추가 - **ncnn vs CNN** 헷갈리는 지점 정리 (팀/로봇 배포 맥락) - 지금 perception은 `yolov8n.pt` + **CUDA** (`gogoping_perception/co…</description>
+    </item>
+    <item>
+      <title>에디터 본문 라이브 미리보기 + 미디어 삭제</title>
+      <link>https://joey114132.github.io/devlog/post.html?id=2026-06-09/editor-live-preview</link>
+      <guid isPermaLink="true">https://joey114132.github.io/devlog/post.html?id=2026-06-09/editor-live-preview</guid>
+      <pubDate>2026-06-09T09:00:00+09:00</pubDate>
+      <description>- devlog 본문에 Prismic CDN 이미지·GIF 렌더링 붙임 - 에디터에 Prismic 업로드·textarea 드롭 위치 삽입까지 연결 - 본문 textarea 아래에서 이미지가 바로 보이게 (raw `![…](url)`만 보이던 문제)…</description>
     </item>
     <item>
       <title>devlog UI 다듬는 중</title>
