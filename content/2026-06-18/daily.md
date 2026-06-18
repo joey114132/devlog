@@ -17,3 +17,17 @@ GitHub에는 `joey114132/smart-farm-demo`로 public repo 만들고 push했다. s
 집에 있는 보드 IP도 `~/.zshrc`에 추가했다. `pinky48` → `192.168.0.46`, `jetco6` → `192.168.6.6`, 둘 다 비번 1. `pinky48`은 SSH까지 `raspi`로 붙는 거 확인했는데 `jetco6`는 ping은 되는데 22번 포트가 막혀 있어서 아직 SSH는 안 됨.
 
 어제 만든 `jetcobot_ros2/smart_farm` ROS 워크스페이스는 오늘 데모 쪽에서 URDF 소스로만 썼고, 실제 Pi에 arm 꽂아서 돌려보진 않았다.
+
+---
+
+---
+date: 2026-06-18
+project: pingdergarten
+tags: [pingdergarten, can, openarm, study]
+---
+
+# pingdergarten CAN·로봇팔 공부 정리
+
+오후엔 physical-ai-repo 쪽으로 갔다. 아키텍처 가이드 읽다가 EduPing 실물 팔이 CAN으로 돌아간다는 걸 다시 맞닿았고, 로봇 팔이랑 CAN을 처음부터 정리해 달라는 요청이 있어서 `docs/robot-arm-can-basics-ko.md`를 새로 썼다. 관절·DOF·FK/IK, MIT 모드, can0/can1 양팔, NoriArm은 Dynamixel·GogoPing은 Modbus 같은 대비표까지 넣었다. `architecture-guide.md`랑 `docs/CLAUDE.md`에 링크 걸었고 Desktop이랑 Obsidian `면접질문` 폴더에도 복사해 뒀다.
+
+채팅으로는 CAN을 왜 쓰는지(우리가 고른 게 아니라 OpenArm·DAMIAO 하드웨어가 CAN-FD라는 점), 프로젝트 안 다른 통신들 HTTP·WS·ROS·Dynamixel·Modbus 맵도 설명했다. 용어가 헷갈린다고 해서 CAN 2.0 vs CAN-FD vs SocketCAN을 초보자 톤으로 풀어줬는데, 아직 그 용어 사전은 md에 append 하진 않았다. 실물 `device-eduping.sh`로 can0 올려보는 건 오늘 안 함.
