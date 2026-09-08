@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-01T09:03:20+09:00",
+  "generated_at": "2026-09-08T09:09:09+09:00",
   "source": "/home/joey/devlogs",
   "site_url": "https://joey114132.github.io/devlog",
-  "count": 42,
+  "count": 47,
   "tags": [
     "agent-harness",
     "can",
@@ -38,6 +38,86 @@
     "yolo"
   ],
   "posts": [
+    {
+      "id": "2026-09-07/daily",
+      "date": "2026-09-07",
+      "title": "kids-video 프로젝트 시작 + Fable 5.1 모델 고정",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "오늘 하루의 핵심은 `~/kids-video/` 였다. Higgsfield로 CoComelon 스타일 kids song 영상을 long-form으로 만드는 파이프라인을 처음부터 세웠고, Song 01 \"Brush Brush Brush\"를 끝까지 완성…",
+      "reading_minutes": 1,
+      "markdown": "# kids-video 프로젝트 시작 + Fable 5.1 모델 고정\n\n오늘 하루의 핵심은 `~/kids-video/` 였다. Higgsfield로 CoComelon 스타일 kids song 영상을 long-form으로 만드는 파이프라인을 처음부터 세웠고, Song 01 \"Brush Brush Brush\"를 끝까지 완성했다.\n\n처음 요청은 두 가지였는데 — CoComelon류 애니메이션, 또는 김정은·트럼프 같은 실존 정치인이 나오는 바이럴 영상. 정치인 쪽은 바로 잘랐다. Higgsfield 자체가 실존 인물 impersonation을 막고 있고, 합성 국가원수 영상은 코미디 의도와 무관하게 manipulated media 규제에 걸린다. 그래서 토끼 캐릭터 Bobo의 하루를 따라가는 키즈 컴필레이션으로 확정.\n\n가장 삽질한 부분이 `seed_audio`였다. 문서에는 2048자 한도라고 적혀 있는데 실제 backend는 그보다 낮다. 2031자 prompt를 HTTP 422로 세 번 다 거부당했고, 이분 탐색으로 좁혀 보니 1551자 통과·2020자 거부. 결론은 **1550자 이하**로 써야 함. `songs/01-brush/song_prompt.short.txt`로 다시 써서 validator 통과 (`tools/validate_song_prompt.py` — 17줄 전부 8 syllable, 112 BPM, 1303자). 곡 생성은 한 번에 됐고 정확히 120.000초, 10.4 크레딧 소모, 잔액 1044.1.\n\nstyle key 1장 + 캐릭터·배경·소품 asset 7장(Bobo·Puppy·Kitty·욕실·침실·칫솔·치약)은 13.5 크레딧으로 먼저 완료했다. 칫솔 v1에 얼굴이 생겨서 agent가 잡고 v2로 교체한 게 인상적이었음.\n\n`tools/` 아래에 만든 것들:\n- `validate_song_prompt.py` — syllable·byte validator\n- `extract_frames.sh` — ffmpeg로 scene 경계 프레임 추출\n- `assemble_song.sh` — block들 이어 붙이기\n- `boundary_sheet.sh` — 경계 확인용 montage\n- `qa-rubric.md` — 검수 rubric\n\nSong 01은 12 block × 10초, 2K(2560×1440), 재생성 3회를 거쳐서 최종 조립까지 마쳤다. `boundary_sheet.sh`로 경계 이미지도 확인 완료.\n\n---\n\n다른 건 Fable 5.1 고정. Claude Code `/model` 피커에 Fable 5.1이 안 보이는 이유를 파고들었다. 바이너리(`~/.local/share/claude/versions/2.1.263`) strings를 뜯어보니 `txe()` 함수에 label \"Fable\" 항목은 있는데 피커 UI에서 노출이 안 되는 구조였다. 접근 권한 자체는 있어서 — `claude -p \"say ok\" --model claude-fable-5-1`이 정상 응답함 — `~/.claude/settings.json` 의 `model` 키를 직접 `claude-fable-5-1`로 바꿨다. 원본은 `settings.json.bak-20260907-172403`에 보관.\n\n오늘 새로 발견한 제약 하나: `higgsfield-seed-audio-prompt-limit` — seed_audio 실제 한도는 ~1551자. 메모리에 기록해 뒀다."
+    },
+    {
+      "id": "2026-09-04/daily",
+      "date": "2026-09-04",
+      "title": "OAuth 세션 만료 연속 3연타",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "09-01, 09-02, 09-03 devlog를 오늘 한꺼번에 따라잡으려 했다. 세 세션 다 켰는데 전부 \"Failed to authenticate: OAuth session expired and could not be refreshed\"로 즉사.…",
+      "reading_minutes": 1,
+      "markdown": "# OAuth 세션 만료 연속 3연타\n\n09-01, 09-02, 09-03 devlog를 오늘 한꺼번에 따라잡으려 했다. 세 세션 다 켰는데 전부 \"Failed to authenticate: OAuth session expired and could not be refreshed\"로 즉사. Claude Code가 인증 토큰이 없으니 아무것도 못 한 것이다.\n\n결국 09-04 자체도 아무 작업이 없었다. zsh 명령 0건, 커밋 0건. 터미널 창들은 열려 있었을 텐데 로그에 아무것도 안 남아 있다.\n\ndevlog-site 쪽에 `auto-devlog.sh`, `devlog-dates.py`, `gather-conversations.py` 같은 새 스크립트들이 unstaged로 쌓여 있는 게 보인다 — 이전에 만들어 뒀는데 커밋은 못 한 상태. OAuth 문제를 먼저 잡지 않으면 자동화가 돌 수가 없는 구조라 닭이 먼저냐 달걀이 먼저냐 상황이었다.\n\n금요일이라 뭔가 마무리했어야 하는데 인증 이슈 하나에 하루가 날아갔다."
+    },
+    {
+      "id": "2026-09-03/daily",
+      "date": "2026-09-03",
+      "title": "조용한 목요일",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "Claude Code 대화도, 터미널 커맨드도 없다. git 상태를 보면 `devlog-site` 랑 `daily-vision-lab` 에 미커밋 파일이 몇 개 쌓여 있긴 한데 오늘 건드린 건 아님 — `gather-context.sh` 가 긁어온…",
+      "reading_minutes": 1,
+      "markdown": "# 조용한 목요일\n\nClaude Code 대화도, 터미널 커맨드도 없다. git 상태를 보면 `devlog-site` 랑 `daily-vision-lab` 에 미커밋 파일이 몇 개 쌓여 있긴 한데 오늘 건드린 건 아님 — `gather-context.sh` 가 긁어온 터미널 이력도 전부 6월 타임스탬프다. 기록할 작업이 없었던 날."
+    },
+    {
+      "id": "2026-09-02/daily",
+      "date": "2026-09-02",
+      "title": "OAuth 세션 만료로 아무것도 못 한 날",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "아침에 Claude Code 켰더니 OAuth 세션이 만료돼서 바로 뻗었다. 08:53에 쇼츠 작업 세션, 09:01에 전날 devlog 쓰려는 세션 — 둘 다 \"Failed to authenticate: OAuth session expired an…",
+      "reading_minutes": 1,
+      "markdown": "# OAuth 세션 만료로 아무것도 못 한 날\n\n아침에 Claude Code 켰더니 OAuth 세션이 만료돼서 바로 뻗었다. 08:53에 쇼츠 작업 세션, 09:01에 전날 devlog 쓰려는 세션 — 둘 다 \"Failed to authenticate: OAuth session expired and could not be refreshed\" 뜨고 즉시 종료. 실제로 뭔가 해 보기도 전에 끝났다.\n\n당일 zsh 명령도 없고, git 커밋도 없다. Claude Code 작업 건수 0.\n\ndevlog-site 쪽에 `auto-devlog.sh`, `auto-devlog.README.md`, `devlog-dates.py`, `gather-conversations.py` 네 파일이 untracked으로 떠 있고, `gather-context.sh`랑 `secrets.py`도 수정된 상태. 아마 전날 만들어 두고 커밋을 못 한 것들 — 오늘 인증이 막혀서 그대로 방치됐다.\n\n조용한 하루. 인증 문제 하나가 하루를 통째로 날린 경우."
+    },
+    {
+      "id": "2026-09-01/daily",
+      "date": "2026-09-01",
+      "title": "청바지 뒷주머니 리벳 대본",
+      "slug": "daily",
+      "project": "",
+      "tags": [],
+      "scrum": {
+        "yesterday": "",
+        "today": "",
+        "share": ""
+      },
+      "excerpt": "오늘 shorts 소재는 청바지 리벳이었다. TOPICS.md에서 후보를 훑는데 이게 눈에 딱 박혔다. 한 문장 테스트: \"튼튼하라고 박은 금속이 소파와 말안장을 긁어대서 회사가 천으로 덮어 숨겼는데, 그 금속이 너무 튼튼해서 천을 뚫고 나와 다시…",
+      "reading_minutes": 1,
+      "markdown": "# 청바지 뒷주머니 리벳 대본\n\n오늘 shorts 소재는 청바지 리벳이었다. TOPICS.md에서 후보를 훑는데 이게 눈에 딱 박혔다. 한 문장 테스트: \"튼튼하라고 박은 금속이 소파와 말안장을 긁어대서 회사가 천으로 덮어 숨겼는데, 그 금속이 너무 튼튼해서 천을 뚫고 나와 다시 긁기 시작했고 결국 29년 만에 쫓겨났다.\" — FORMAT.md 기준 '고생이 헛수고였다' 축에 정확히 걸리는 소재라 통과.\n\nLevi's 1차 자료 PDF 불러와서 timeline 검증하고, 독립 소스로 크로스체크한 다음 스크립트 파일 세 개 만들었다: `shorts/scripts/2026-09-01-jeans-rivet-caps.json`, `2026-09-01-jeans-rivet-prompts.json`, `2026-09-01-jeans-rivet.json`. 그 다음 `python3 layout/captions.py`로 자막 길이 검증하다가 뭔가 안 맞아서 caps.json 한 번 더 편집했고, `script_check.py`랑 `prompt_check.py` 통과 확인. TOPICS.md에 쓴 날 기록하고 마무리했다.\n\n세션 시작이 08:53이고 09:07에 끝났으니 대본 하나에 14분. 이 정도면 빠른 편.\n\n---\n\ndevlog-site에 자동화 스크립트들이 쌓였다. `scripts/auto-devlog.sh`, `scripts/devlog-dates.py`, `scripts/gather-conversations.py`가 새로 들어왔고 `gather-context.sh`랑 `secrets.py`도 손봤다. 커밋 메시지는 \"devlog 빌드 갱신 (2026-09-01)\". 아직 push 안 된 상태로 `auto-devlog.README.md`도 미추적 상태.\n\n저녁엔 하루 digest 정리 요청이 들어와서 raw.md 읽고 `/home/joey/devlog/digest/2026-09-01.md` 작성했다. 원자료 78줄 중 일부가 잘려 있어서 결과 불분명한 건 \"확인 필요\"로 남겼다고 한다."
+    },
     {
       "id": "2026-08-31/daily",
       "date": "2026-08-31",
